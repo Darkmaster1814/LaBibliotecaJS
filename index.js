@@ -298,10 +298,11 @@ return arr.reduce((acumulador,elemento)=>acumulador+elemento,0);//Suma cada elem
 function CarritoCompras()
 {
 let total=[];//Total a pagar
-let carrito=[];//Carrito de compras con
+let carrito=[];//Carrito de compras 
 let opcion=menu();
 while(opcion.toLowerCase()!="esc")
 {
+    carrito=[];//Vacia el carrito despues de cada compra
     if(opcion!=""&&opcion.toLowerCase()!="esc")
     {
         opcion=parseInt(opcion);
@@ -311,7 +312,7 @@ while(opcion.toLowerCase()!="esc")
             {
                 case 1://Add new product
                 productos=agregarProductos(productos);
-                alert(`Estatus actual de inventario:\n Cantidad de productos diferentes: ${productos.length}\nValor de inventario:$ ${calcularCosto(productos)}`);
+                alert(`Estatus actual de inventario:\nCantidad de productos diferentes: ${productos.length}\nValor de inventario:$ ${calcularCosto(productos)}`);
                     break;
                 case 2://Create add a list of product to buy               
                     do{
@@ -333,7 +334,7 @@ while(opcion.toLowerCase()!="esc")
                             total.push(subtotal);
                         }
                         else{alert(`El producto no tiene stock`);}
-                    } while(true);console.log(carrito);
+                    } while(true);
                 break;   
                 default:
                     alert("Ingrese una opción válida");
