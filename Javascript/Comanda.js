@@ -319,7 +319,9 @@ function eliminarDeCarrito(carId)
     let indexABorrar=carrito.findIndex((car)=> Number(car.id)===Number(carId));
         /* actualiza el stock de productos */
     actualizarStock();
+    imprimirProductos();
     carrito.splice(indexABorrar,1);
+    imprimirTotal();
     columnaABorrar.remove();
 
 }
@@ -343,10 +345,11 @@ function actualizarStock()
         if(val)
         {
             idPro=producto.id;
+            producto.cantidad+=cantidad;
         }
     }
-    let indexAgregar=productos.findIndex((producto)=> Number(producto.id)===Number(idPro));
-    productos[indexAgregar].cantidad+=cantidad;
+/*     let indexAgregar=productos.findIndex((producto)=> Number(producto.id)===Number(idPro));
+    productos[indexAgregar].cantidad+=cantidad; */
 }
 /* Resetear el carrito cada que se da click */
 function reset(){
