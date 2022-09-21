@@ -1,7 +1,6 @@
-<!-- Seccion de Agregar articulos nuevos -->
 <!DOCTYPE html>
 <html lang="es">
-<!--  -->
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -21,10 +20,10 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootswatch@4.5.2/dist/minty/bootstrap.min.css"
         integrity="sha384-H4X+4tKc7b8s4GoMrylmy2ssQYpDHoqzPa9aKXbDwPoPUA3Ra8PA5dGzijN+ePnH" crossorigin="anonymous" />
     <!-- Reference of CSS file -->
-    <link rel="stylesheet" href="./CSS/styles.css" />
+    <link rel="stylesheet" href="../CSS/styles.css" />
     <!-- Library of animation and transitions -->
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet" />
-    <title>Nuevos Articulos</title>
+    <title>Articulos</title>
 </head>
 
 <body>
@@ -42,10 +41,10 @@
                 <div class="mx-auto"></div>
                 <ul class="navbar-nav">
                     <li class="nav-item">
-                        <a class="nav-link active" href="./HTML/Comanda.html">Comanda</a>
+                        <a class="nav-link active" href="#">Comanda</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link active" href="#">Inventario</a>
+                        <a class="nav-link active" href="../index.html">Inventario</a>
                     </li>
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button"
@@ -60,59 +59,28 @@
         </div>
     </nav>
     <!-- Full responsive header end -->
-    <!-- Container command products and cards start -->
-    <h2>Agregar Nuevo Producto</h2>
-    <!-- form start -->
-    <div class="container-fluid">
-        <div class="row ">
-            <form class="col-md-8 mt-4 mb-4" id="formulario">
-                <div class="form-row">
-                    <div class="form-group col-md-6">
-                        <label for="inputNombre">Nombre</label>
-                        <input type="text" class="form-control" id="inputNombre" placeholder="Nombre del producto" required>
-                    </div>
-                    <div class="form-group col-md-6">
-                        <label for="inputCantidad">Cantidad</label>
-                        <input type="number" class="form-control" id="inputCantidad" placeholder="Cantidad disponible" required>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label for="inputPrecio">Precio</label>
-                    <input type="text" class="form-control" id="inputPrecio"
-                        placeholder="Costo unitario del producto en formato $XX.YY" required>
-                </div>
-                <select id="inputCategoria" class="form-control">
-                    <option selected>Otros</option>
-                    <option>Bebidas Calientes</option>
-                    <option>Bebidas Frías</option>
-                    <option>Panadería</option>
-                    <option>Cafetería</option>
+    <!-- Filter start -->
+    <div class="container mt-3" id="contenedorFiltro">
+        <div class="row justify-content-start">
+            <form class="form-group col-12 " id="formularioFiltro">
+                <select id="filtrar" class="form-control">
+                    <option selected>Ordenar por ID</option>
+                    <option>Ordenar por Nombre</option>
+                    <option>Ordenar por Categoria</option>
+                    <option>Ordenar por Mayor Precio</option>
+                    <option>Ordenar por Menor Precio</option>
+                    <option>Ordenar por Cantidad Disponible</option>
                 </select>
-                <button type="submit" class="btn btn-primary">Registrar Producto</button>
+                <button type="submit" class="btn btn-warning mt-3">Ordenar</button>
             </form>
-            <div class="col-md-4" id="estadisticas">
-            </div>
-        </div><!-- filtro -->
-        <div class="container-Fluid mt-3" id="contenedorFiltro">
-            <div class="row justify-content-start">
-                <form class="form-group col-6 " id="formularioFiltro">
-                    <select id="filtrar" class="form-control">
-                        <option selected>Ordenar por ID</option>
-                        <option>Ordenar por Nombre</option>
-                        <option>Ordenar por Categoria</option>
-                        <option>Ordenar por Mayor Precio</option>
-                        <option>Ordenar por Menor Precio</option>
-                        <option>Ordenar por Cantidad Disponible</option>
-                    </select>
-                    <button type="submit" class="btn btn-warning mt-3">Ordenar</button>
-                </form>
-            </div>
-    </div>
-        <div class="container-fluid"><div class="row" id="contenedorProductos"></div>
-    </div>
         </div>
-
-    <!-- form ends -->
+</div>
+<!-- Filter end -->
+    <!-- Container command products and cards start -->
+    <div class="container-fluid ">
+        <div class="row mx-auto" id="contenedorProductos">
+        </div>
+    </div>
     <!-- Container command products end -->
     <!-- Footer start -->
     <footer class="mt-4">
@@ -125,12 +93,62 @@
         </div>
     </footer>
     <!-- Footer end -->
-    <!-- BUTTON coffe -->
+    <!-- BUTTON CARSHOPPING -->
     <!-- Button trigger modal -->
     <button type="button" class="subir" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
-        <a href="#"><i class="fa-solid fa-coffee"></i></a>
+        <i class="fa-solid fa-cart-shopping"></i>
     </button>
+    <!-- Modal -->
+    <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+        aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h6 class="modal-title" id="staticBackdropLabel">Comanda de Pedidos</h6>
+                </div>
+                <!-- all articles of car-shipping -->
+                <div class="modal-body">
+                    <form id="formularioCarrito">
+                        <div class="mb-3">
+                            <select id="mesa" class="form-control">
+                                <option selected>MESA 1</option>
+                                <option>MESA 2</option>
+                                <option>MESA 3</option>
+                                <option>MESA 4</option>
+                                <option>MESA 5</option>
+                                <option>MESA 6</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <div class="form-group">
+                                <div class="form-group col-md-12">
+                                    <label for="inputNombre">Nombre</label>
+                                    <input type="text" class="form-control" id="inputNombre" placeholder="Nombre del cliente">
+                                </div>
+                            </div>
+                        <div class="mb-3">
+                        <div class="form-group">
+                            <label for="detallesTexto">Detalles del pedido</label>
+                            <textarea class="form-control" id="detallesTexto" rows="3"></textarea>
+                        </div>
+                        </div>
 
+                    <hr>
+                    <!-- articulos de carrito -->
+                    <div class="row mx-auto" id="contenedorCarrito">
+                    </div>
+                    <!-- Subtotal -->
+                    <hr>
+                    <div class="row justify-content-center"><h4 id="totalPago"></h4></div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                    <button type="submit" class="btn btn-primary">Guardar comanda</button>
+                </div>
+            </form>
+            </div>
+        </div>
+    </div>
     <!-- button of carshoping ends -->
     <!-- DEFINITION OF SCRIPT ANIMATION AND TRANSITION -->
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
@@ -151,7 +169,7 @@
         });
     </script>
     <!-- LINK JS -->
-    <script src="./Javascript/index.js"></script>
+    <script src="../Javascript/Comanda.js"></script>
 </body>
 
 </html>

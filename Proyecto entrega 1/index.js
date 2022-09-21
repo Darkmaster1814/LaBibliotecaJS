@@ -312,6 +312,8 @@ while(opcion.toLowerCase()!="esc")
             {
                 case 1://Add new product
                 productos=agregarProductos(productos);
+
+                const contenedorProductos = document.getElementById("contenedor-productos");
                 alert(`Estatus actual de inventario:\nCantidad de productos diferentes: ${productos.length}\nValor de inventario:$ ${calcularCosto(productos)}`);
                     break;
                 case 2://Create add a list of product to buy               
@@ -357,3 +359,4 @@ inicio();
 }
 /* Run file */
 main();
+

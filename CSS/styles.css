@@ -1,0 +1,533 @@
+/* Import styles from other subwebpages */ /* Font vinculation */
+@import url("https://fonts.googleapis.com/css2?family=Cedarville+Cursive&family=Ibarra+Real+Nova:ital,wght@1,500&family=PT+Serif&display=swap");
+/* VARIABLES */
+/* Text sizes */
+/* Text type */
+/* Text cursive */
+/* Text normal */
+/* Text for subtitles info */
+/* Colors */
+/* Map of colors for social icons */
+/* Shadow */
+/* Transition */
+/* PAGE SIZES */
+/* Gaps */
+/* Mixin of type of text */
+/* Mixin of background image */
+/* Font vinculation */
+@import url("https://fonts.googleapis.com/css2?family=Cedarville+Cursive&family=Ibarra+Real+Nova:ital,wght@1,500&family=PT+Serif&display=swap");
+/* VARIABLES */
+/* Text sizes */
+/* Text type */
+/* Text cursive */
+/* Text normal */
+/* Text for subtitles info */
+/* Colors */
+/* Map of colors for social icons */
+/* Shadow */
+/* Transition */
+/* PAGE SIZES */
+/* Gaps */
+/* Mixin of type of text */
+/* Mixin of background image */
+/* Universal reset */
+@import url("https://fonts.googleapis.com/css2?family=Cedarville+Cursive&family=Ibarra+Real+Nova:ital,wght@1,500&family=PT+Serif&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Cedarville+Cursive&family=Ibarra+Real+Nova:ital,wght@1,500&family=PT+Serif&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Cedarville+Cursive&family=Ibarra+Real+Nova:ital,wght@1,500&family=PT+Serif&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Cedarville+Cursive&family=Ibarra+Real+Nova:ital,wght@1,500&family=PT+Serif&display=swap");
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* Scrolling effect */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Underlighning */
+::selection {
+  background-color: #a9742c;
+  color: #f2fedc;
+}
+
+/* Scroll personalizado */
+::-webkit-scrollbar-track {
+  box-shadow: inset 0 0 5px rbga(0, 0, 0, 0.3);
+  border-radius: 10px;
+  background-color: #1b1b1b;
+}
+
+::-webkit-scrollbar {
+  width: 8px;
+  background-color: #1b1b1b;
+}
+
+::-webkit-scrollbar-thumb {
+  border-radius: 10px;
+  box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.9);
+  background-color: #c8ae53;
+}
+
+/* Font vinculation */
+/* VARIABLES */
+/* Text sizes */
+/* Text type */
+/* Text cursive */
+/* Text normal */
+/* Text for subtitles info */
+/* Colors */
+/* Map of colors for social icons */
+/* Shadow */
+/* Transition */
+/* PAGE SIZES */
+/* Gaps */
+/* Mixin of type of text */
+/* Mixin of background image */
+/* MEDIA QWERY FOR small screens */
+@media only screen and (min-width: 490px) and (max-width: 900px) {
+  h1, h2 {
+    font-size: 2rem;
+  }
+  h3 {
+    font-size: 2rem;
+  }
+  h5 {
+    font-size: 2rem;
+  }
+  h6 {
+    font-size: 2rem;
+  }
+  p {
+    font-size: 1.5rem;
+  }
+  .card-text {
+    font-size: 1.5rem;
+  }
+  .cards-wrapper {
+    display: flex;
+    flex-wrap: wrap;
+  }
+}
+/* MEDIA QWERY FOR SMARTPHONES */
+@media only screen and (min-width: 0px) and (max-width: 489px) {
+  h1, h2 {
+    font-size: 1rem;
+  }
+  h2 {
+    font-size: 1rem;
+  }
+  h5 {
+    font-size: 1rem;
+  }
+  h6 {
+    font-size: 1rem;
+  }
+  /* text effect of the videos */
+  .captation {
+    position: absolute;
+    margin-top: 30%;
+    margin-left: 5%;
+  }
+  .captation p {
+    font-family: "Kdam Thmor Pro", sans-serif;
+    font-style: oblique;
+    color: #c8ae53;
+    font-size: 5px;
+    text-shadow: 0 0 5px #f2fedc;
+    text-align: center;
+  }
+  h3 {
+    font-size: 5px;
+  }
+  h5 {
+    font-size: 5px;
+  }
+  h6 {
+    font-size: 5px;
+  }
+  p {
+    font-size: 5px;
+  }
+  .card-text {
+    font-size: 1rem;
+  }
+  .cards-wrapper {
+    display: flex;
+    flex-wrap: wrap;
+  }
+}
+/* Font vinculation */
+/* VARIABLES */
+/* Text sizes */
+/* Text type */
+/* Text cursive */
+/* Text normal */
+/* Text for subtitles info */
+/* Colors */
+/* Map of colors for social icons */
+/* Shadow */
+/* Transition */
+/* PAGE SIZES */
+/* Gaps */
+/* Mixin of type of text */
+/* Mixin of background image */
+/* SUBMENUSTYLES */
+/* Menu styles */
+.submenu {
+  background-image: url(../Imagenes/Menu1.jpg);
+  width: 100%;
+  height: 550px;
+  background-position: center;
+  background-size: cover;
+}
+
+.submenu a {
+  text-decoration: none;
+  color: #f2fedc;
+  text-shadow: 0 0 5px #f2fedc;
+}
+
+/* card widht of menu web page */
+.card.menu {
+  width: 16rem;
+}
+
+/* Sub row of conocenos subwebpage */
+.subconocenos {
+  gap: 5%;
+  padding: 2%;
+}
+
+.badge {
+  position: absolute;
+  right: 0px;
+  top: 0px;
+  padding: 12px 15px;
+  border-radius: 0 0 0 26px;
+  font-size: 14px;
+}
+
+/* Font vinculation */
+/* VARIABLES */
+/* Text sizes */
+/* Text type */
+/* Text cursive */
+/* Text normal */
+/* Text for subtitles info */
+/* Colors */
+/* Map of colors for social icons */
+/* Shadow */
+/* Transition */
+/* PAGE SIZES */
+/* Gaps */
+/* Mixin of type of text */
+/* Mixin of background image */
+/* Pasword styles */
+.pass {
+  padding: 5%;
+}
+
+/* Font vinculation */
+/* VARIABLES */
+/* Text sizes */
+/* Text type */
+/* Text cursive */
+/* Text normal */
+/* Text for subtitles info */
+/* Colors */
+/* Map of colors for social icons */
+/* Shadow */
+/* Transition */
+/* PAGE SIZES */
+/* Gaps */
+/* Mixin of type of text */
+/* Mixin of background image */
+/* Error of button 404 */
+.errorBackground {
+  background-image: url(../Imagenes/error404.svg);
+  width: 100%;
+  height: 550px;
+  background-position: center;
+  background-size: cover;
+  height: 600px;
+}
+
+.error {
+  padding-top: 25%;
+  margin-left: 45%;
+}
+
+/* body background color */
+body {
+  background-color: #f2fedc;
+}
+
+/* TEXT colors */
+/* font awesome styles */
+a, .ubicacion a, .menu a {
+  color: #f2fedc;
+  text-decoration: none;
+  text-shadow: 0 0 5px #333;
+}
+a p, .ubicacion a p, .menu a p {
+  /* text-align: right; */
+  font-size: 2rem;
+  transition: all 0.8s;
+}
+a p:hover {
+  transform: scale(1.05);
+  color: #00755d;
+  transition: all 0.8s;
+}
+
+h1, h2 {
+  /* text normal type,fontstyle,color,size */
+  font-family: "Kdam Thmor Pro", sans-serif;
+  font-style: oblique;
+  color: #f2fedc;
+  font-size: 3rem;
+  text-shadow: 0 0 5px #333;
+}
+
+h2 {
+  margin-bottom: 0;
+}
+
+h3 {
+  /* text normal type,fontstyle,color,size */
+  font-family: "Kdam Thmor Pro", sans-serif;
+  font-style: oblique;
+  color: #c8ae53;
+  font-size: 3rem;
+  text-shadow: 0 0 5px #333;
+}
+
+h4 {
+  /* text normal type,fontstyle,color,size */
+  font-family: "Kdam Thmor Pro", sans-serif;
+  font-style: oblique;
+  color: #c8ae53;
+  font-size: 2rem;
+  text-shadow: 0 0 5px #333;
+  /* animation of icons */
+}
+h4 i {
+  transition: all 0.8s;
+  letter-spacing: 4px;
+  color: #1b1b1b;
+}
+h4 a i:hover {
+  color: #00755d;
+  transform: translateY(-15px);
+  transition: all 0.8s;
+}
+
+p {
+  /* text cursive type,fontstyle,color,size */
+  font-family: "Cedarville Cursive", cursive;
+  font-style: italic;
+  color: #f2fedc;
+  font-size: 2rem;
+  text-shadow: 0 0 5px #333;
+}
+
+h5 {
+  font-family: "PT Serif", serif;
+  color: black;
+  font-size: 5.5rem;
+}
+
+h6 {
+  font-family: "PT Serif", serif;
+  color: #00755d;
+  font-size: 2rem;
+}
+
+/* text effect of the videos */
+.captation {
+  display: inline-block;
+  justify-content: center;
+  position: absolute;
+  margin-left: 5%;
+  margin-top: 5%;
+}
+.captation p {
+  font-family: "Cedarville Cursive", cursive;
+  font-style: italic;
+  color: #c8ae53;
+  font-size: 2rem;
+  text-shadow: 0 0 5px #333;
+}
+
+/* Navigation bar color and style*/
+.navbar, .jumbotron {
+  background-image: linear-gradient(to bottom, rgba(151, 92, 44, 0.813) 30%, rgb(233, 172, 87), rgba(211, 151, 67, 0.7));
+}
+
+.navbar-nav {
+  margin-right: 5%;
+}
+
+/* Text logo styles */
+/* Logo */
+.logo h1, .logo h2 {
+  /* text cursive type,fontstyle,color,size */
+  font-family: "Cedarville Cursive", cursive;
+  font-style: italic;
+  color: #f2fedc;
+  font-size: 2rem;
+  text-shadow: 0 0 5px #333;
+}
+.logo span {
+  /* text normal type,fontstyle,color,size */
+  font-family: "Kdam Thmor Pro", sans-serif;
+  font-style: normal;
+  color: #1b1b1b;
+  font-size: 2rem;
+  text-shadow: 1px 1px #333;
+}
+
+/* Carrusell style */
+.carrusel-height {
+  height: 500px;
+}
+
+.carousel-inner {
+  padding: 1em;
+}
+
+.carousel-control-prev, .carousel-control-next {
+  background-color: transparent;
+  border: 0;
+}
+
+/* jombotron style */
+.jumbotron {
+  margin-top: 5%;
+}
+.jumbotron a {
+  text-decoration: none;
+  color: #f2fedc;
+}
+
+/* Menu styles */
+.menu {
+  background-image: url(../Imagenes/Menu.jpg);
+  width: 100%;
+  height: 550px;
+  background-position: center;
+  background-size: cover;
+}
+/* ubicacion styles */
+.ubicacion {
+  background-image: url(../Imagenes/map-gcf0629988_1920.jpg);
+  width: 100%;
+  height: 550px;
+  background-position: center;
+  background-size: cover;
+}
+/* Jumbotron nosotros */
+.jumbotron_us {
+  background-image: linear-gradient(to bottom, #00755d, #008263, #009068, #009d6b, #00ab6e, #00b072, #00b477, #00b97b, #00b682, #09b388, #17b08d, #24ad91);
+  margin-top: 30px;
+}
+.jumbotron_us h4 {
+  color: #1b1b1b;
+}
+.jumbotron_us a {
+  text-decoration: none;
+  color: #f2fedc;
+}
+
+/* Us style  text colors */
+.card {
+  margin-top: 5%;
+  border: 0px;
+  height: 100%;
+}
+
+.cards-wrapper {
+  display: flex;
+  justify-content: center;
+}
+
+.card-title {
+  color: #1b1b1b !important;
+  font-weight: bold;
+}
+
+.card-text {
+  font-family: "Cedarville Cursive", cursive;
+  font-style: italic;
+  color: #1b1b1b !important;
+  text-shadow: 0 0 5px #c8ae53;
+  font-size: 2rem;
+}
+
+/* footer style */
+footer, h2 {
+  background-color: #00755d;
+  text-align: center;
+  /* Icons social */
+}
+footer p, h2 p {
+  color: #f2fedc;
+  font-size: 1rem;
+}
+footer i, h2 i {
+  font-size: 1.5rem;
+  letter-spacing: 20px;
+  transition: all 0.8s;
+  margin-bottom: 4%;
+}
+footer i:hover, h2 i:hover {
+  cursor: pointer;
+  transform: translateY(-15px);
+  transition: all 0.8s;
+}
+
+/* map of colors of social icons */
+.fa-facebook {
+  background-image: linear-gradient(to right bottom, #0165e1, #0076ea, #0087f1, #0097f7, #00a6fb, #00abfd, #00b0fe, #00b5ff, #03b2ff, #08affe, #10acfe, #17a9fd);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.fa-twitter {
+  background-image: linear-gradient(to right bottom, #008abe, #0093ca, #009bd6, #00a4e2, #00adee, #05b2f4, #0ab7f9, #0fbcff, #18beff, #1fc0ff, #25c2ff, #2bc4ff);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.fa-instagram {
+  background-image: linear-gradient(to right bottom, #405de6, #9d47d2, #d125b2, #f1008a, #ff0060, #ff324b, #ff4f36, #ff681d, #ff8a2b, #fea842, #fec35f, #ffdc80);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* BOTTON HOME STYLE */
+.subir {
+  background-color: #c8ae53;
+  color: #f2fedc;
+  font-size: 25px;
+  text-align: center;
+  border: 5px solid rgba(211, 151, 67, 0.707);
+  border-radius: 50%;
+  box-shadow: 0 0 5px #333;
+  position: fixed;
+  height: 40px;
+  width: 40px;
+  bottom: 40px;
+  right: 40px;
+  line-height: 30px;
+  transition: all 0.8s;
+}
+.subir i:hover {
+  transform: translateY(-15px);
+  transition: all 0.8s;
+  color: #00755d;
+}
+
+/*# sourceMappingURL=styles.css.map */
