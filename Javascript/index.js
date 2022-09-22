@@ -24,7 +24,7 @@ class Producto{
         this.nombre=nombre.toUpperCase();
         this.cantidad=cantidad;
         this.precio=precio;
-        this.categoria=categoria.toUpperCase();
+        this.categoria=categoria;
     }
 }
 /* inicializar los nodos dentro del HTML */
