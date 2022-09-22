@@ -162,7 +162,7 @@ function imprimirProductos(){
         column.id=`column-${producto.id}`;
         column.innerHTML=`
     <div class="card">
-    <img class="card-img-top ml-4" style="width:300px" src="../Imagenes/${producto.categoria.replace(`/\s/g`,`-`)}.svg" alt="Card café">
+    <img class="card-img-top ml-4" style="width:300px" src="../Imagenes/${producto.categoria}.svg" alt="Card café">
         <div class="card-body">
             <h4 class="card-title">
             <strong>${producto.nombre}</strong>
@@ -291,7 +291,7 @@ function imprimirCarrito(){
     <div class="card mb-3">
     <div class="row g-0">
         <div class="col-md-3">
-            <img src="../Imagenes/${car.categoria.replace(`/\s/g`,`-`)}.svg" class="img-fluid rounded-start"
+            <img src="../Imagenes/${car.categoria}.svg" class="img-fluid rounded-start"
                 alt="cafe de compra" style="width:300px">
         </div>
         <div class="col-md-7">
