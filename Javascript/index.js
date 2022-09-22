@@ -165,7 +165,7 @@ function imprimirProductos(){
             ID:<strong> ${producto.id}: ${producto.nombre}</strong>
             </h4>
             <h4 class="card-title">
-            <strong>${producto.categoria}</strong>
+            <strong>${producto.categoria.replace(`/\s/g`,`%20`)}</strong>
             </h4>
             <p class="card-text">
             <strong>Cantidad:</strong> ${producto.cantidad} PZ
