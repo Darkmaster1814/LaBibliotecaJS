@@ -261,6 +261,7 @@ function imprimirCarrito(){
 /* Eliminar producto de carrito de compras */
 function eliminarDeCarrito(carId)
 {
+    obtenerCarritoStorage();
     let columnaABorrar=document.getElementById(`columna-${carId}`);
     let indexABorrar=carrito.findIndex((car)=> Number(car.id)===Number(carId));
         /* actualiza el stock de productos */
