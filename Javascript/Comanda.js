@@ -162,7 +162,7 @@ function imprimirProductos(){
         column.id=`column-${producto.id}`;
         column.innerHTML=`
     <div class="card">
-    <img class="card-img-top ml-4" style="width:300px" src="../Imagenes/${producto.categoria}.svg" alt="Card café">
+    <img class="card-img-top ml-4" style="width:300px" src=".././Imagenes/${producto.categoria}.svg" alt="Card café">
         <div class="card-body">
             <h4 class="card-title">
             <strong>${producto.nombre}</strong>
