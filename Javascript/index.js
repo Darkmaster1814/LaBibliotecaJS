@@ -221,8 +221,6 @@ function actualizarProductosStorage()
             productosJSON= JSON.stringify(productos);
             localStorage.setItem("productos", productosJSON);
         }
-
-
 }
 /* Obtener el storage al comienzo de la carga de la pag */
 function obtenerProductosStorage() {

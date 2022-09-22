@@ -66,7 +66,7 @@ function InicializarEventos()
     formularioFiltro.onsubmit=(evento)=>filtrarInformacion(evento);
     formularioCarrito.onsubmit=(evento)=>generarPedido(evento);
 }
-/* generar un pedido */
+/* Generar un pedido */
 function generarPedido(evento)
 {
     evento.preventDefault();
@@ -89,68 +89,13 @@ function generarPedido(evento)
         {
             let pedido= new Pedido(mesa,nombreCliente,detallesPedido,producto.nombre,producto.precio,cantidad,subTotal);
             pedidos.push(pedido);
+            actualizarPedidoStorage();
         }
     }
     carrito=[];
     imprimirCarrito();
     imprimirTotal();
     console.log(pedidos);
-}
-/* Obtener el tipo de filtro */
-function filtrarInformacion(evento)
-{
-    evento.preventDefault();
-    let filtro=filtrar.value;
-    if(filtro==="Ordenar por ID")
-    {
-        productos.sort((a,b)=>b.id-a.id);
-    }
-    else if(filtro==="Ordenar por Nombre")
-    {
-        productos.sort((a,b)=>{
-            if(a.nombre>b.nombre)
-            {
-                return 1;
-            }
-            else if(a.nombre<b.nombre)
-            {
-                return -1;
-            }
-            else
-            {
-                return 0;
-            }
-        });
-    }
-    else if(filtro==="Ordenar por Categoria")
-    {
-        productos.sort((a,b)=>{
-            if(a.categoria>b.categoria)
-            {
-                return 1;
-            }
-            else if(a.categoria<b.categoria)
-            {
-                return -1;
-            }
-            else
-            {
-                return 0;
-            }
-        });
-    }
-    else if(filtro==="Ordenar por Mayor Precio")
-    {
-        productos.sort((a,b)=>b.precio-a.precio);
-    }
-    else if(filtro==="Ordenar por Menor Precio")
-    {
-        productos.sort((a,b)=>a.precio-b.precio);
-    }
-    else if(filtro==="Ordenar por Cantidad Disponible")
-    {
-        productos.sort((a,b)=>b.cantidad-a.cantidad);
-    }
 }
 /* Imprimir los productos con codigo HTML DOM */
 function imprimirProductos(){
@@ -215,7 +160,7 @@ function imprimirProductos(){
         let botonMas=document.getElementById(`botonMas-${producto.id}`);
         let botonMenos=document.getElementById(`botonMenos-${producto.id}`);
         let textoCantidad=document.getElementById(`textoCantidad-${producto.id}`);
-        /* event agregar */
+        /* event agregar*/
         botonMas.onclick=()=>{
             cantidadInicial+=1;
             if(cantidadInicial<=producto.cantidad&&cantidadInicial>0)
@@ -242,7 +187,6 @@ function imprimirProductos(){
             }
         };
     });//Termina foreach
-    
 }
 /* Funcion agregar mas */
 function agregarMas(cantidadInicial,textoCantidad)
@@ -269,7 +213,9 @@ function agregarCarritoDeCompras(idProducto,cantidadInicial)
             reset();
         }
         carrito.push(car);
-        productos[indexAgregar].cantidad-=cantidadInicial;
+        actualizarCarritoStorage();
+        productos[indexAgregar].cantidad-=cantidadInicial;//Quitar del stock
+        actualizarProductosStorage();
         console.log(carrito);
         imprimirProductos();
         imprimirCarrito();
@@ -323,6 +269,7 @@ function eliminarDeCarrito(carId)
     carrito.splice(indexABorrar,1);
     imprimirTotal();
     columnaABorrar.remove();
+    actualizarCarritoStorage();
 
 }
 /* Encuentra el indice para actualizar stock */
@@ -337,7 +284,7 @@ function actualizarStock()
         {
             if(car.nombre===producto.nombre)
             {
-                cantidad+=car.cantidad;
+                cantidad+=car.cantidad;//devolver productos al stock
                 console.log(cantidad);
                 val=true;
             }
@@ -346,10 +293,9 @@ function actualizarStock()
         {
             idPro=producto.id;
             producto.cantidad+=cantidad;
+            actualizarProductosStorage();
         }
     }
-/*     let indexAgregar=productos.findIndex((producto)=> Number(producto.id)===Number(idPro));
-    productos[indexAgregar].cantidad+=cantidad; */
 }
 /* Resetear el carrito cada que se da click */
 function reset(){
@@ -358,7 +304,48 @@ function reset(){
         let columnaCarritoABorrar=document.getElementById(`columna-${car.id}`);
         columnaCarritoABorrar.remove();
     }
-
+}
+/* STORAGE Y JSON */
+/* actualizar el storage local con el JSON */
+function actualizarProductosStorage()
+{
+    console.log(productos.length)
+        if(productos.length==null)
+        {
+            localStorage.clear();
+        }
+        else
+        {
+            let productosJSON;
+            productosJSON= JSON.stringify(productos);
+            localStorage.setItem("productos", productosJSON);
+        }
+}
+function actualizarCarritoStorage()
+{
+    if(carrito.length==null)
+    {
+        localStorage.carrito.clear();
+    }
+    else
+    {
+        let carritoJSON;
+        carritoJSON=JSON.stringify(carrito);
+        localStorage.setItem("carrito",carritoJSON);
+    }
+}
+function actualizarPedidoStorage()
+{
+    if(pedidos.length==null)
+    {
+        localStorage.pedidos.clear();
+    }
+    else
+    {
+        let pedidosJSON;
+        pedidosJSON=JSON.stringify(pedidos);
+        localStorage.setItem("pedidos",pedidosJSON);
+    }
 }
 /* Obtener el storage al comienzo de la carga de la pag */
 function obtenerProductosStorage() {
@@ -382,6 +369,79 @@ function obtenerProductosStorage() {
     {
         ocultarFiltro();
     }
+}
+function obtenerCarritoStorage(){
+    let carritoJSON=localStorage.getItem("carrito");
+    if(carritoJSON)
+    {
+        carrito=JSON.parse(carritoJSON);
+        if(carrito.length!=0)
+        {
+            idCar=carrito[carrito.length-1].idCar+1
+        }
+        if(carrito.length==0)
+        {
+            idCar=1;
+        }
+        imprimirCarrito();
+    }
+}
+/* Obtener el tipo de filtro */
+function filtrarInformacion(evento)
+{
+    evento.preventDefault();
+    let filtro=filtrar.value;
+    if(filtro==="Ordenar por ID")
+    {
+        productos.sort((a,b)=>b.id-a.id);
+    }
+    else if(filtro==="Ordenar por Nombre")
+    {
+        productos.sort((a,b)=>{
+            if(a.nombre>b.nombre)
+            {
+                return 1;
+            }
+            else if(a.nombre<b.nombre)
+            {
+                return -1;
+            }
+            else
+            {
+                return 0;
+            }
+        });
+    }
+    else if(filtro==="Ordenar por Categoria")
+    {
+        productos.sort((a,b)=>{
+            if(a.categoria>b.categoria)
+            {
+                return 1;
+            }
+            else if(a.categoria<b.categoria)
+            {
+                return -1;
+            }
+            else
+            {
+                return 0;
+            }
+        });
+    }
+    else if(filtro==="Ordenar por Mayor Precio")
+    {
+        productos.sort((a,b)=>b.precio-a.precio);
+    }
+    else if(filtro==="Ordenar por Menor Precio")
+    {
+        productos.sort((a,b)=>a.precio-b.precio);
+    }
+    else if(filtro==="Ordenar por Cantidad Disponible")
+    {
+        productos.sort((a,b)=>b.cantidad-a.cantidad);
+    }
+    imprimirProductos();
 }
 /* mostrar filtro */
 function mostrarFiltro()
@@ -412,6 +472,7 @@ function main()
     inicializarElementos();
     InicializarEventos();
     obtenerProductosStorage();
+    obtenerCarritoStorage();
     console.log(carrito);
 }
 main();
