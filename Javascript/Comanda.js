@@ -291,7 +291,7 @@ function imprimirCarrito(){
     <div class="card mb-3">
     <div class="row g-0">
         <div class="col-md-3">
-            <img src="../Imagenes/${car.categoria}.svg" class="img-fluid rounded-start"
+            <img src=".././Imagenes/${car.categoria}.svg" class="img-fluid rounded-start"
                 alt="cafe de compra" style="width:300px">
         </div>
         <div class="col-md-7">
