@@ -1,12 +1,9 @@
-<!-- Seccion de Agregar articulos nuevos -->
 <!DOCTYPE html>
 <html lang="es">
-<!--  -->
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!-- ETIQUETAS META FIN -->
     <!-- Library type of fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -21,12 +18,11 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootswatch@4.5.2/dist/minty/bootstrap.min.css"
         integrity="sha384-H4X+4tKc7b8s4GoMrylmy2ssQYpDHoqzPa9aKXbDwPoPUA3Ra8PA5dGzijN+ePnH" crossorigin="anonymous" />
     <!-- Reference of CSS file -->
-    <link rel="stylesheet" href="./CSS/styles.css" />
+    <link rel="stylesheet" href="../CSS/styles.css" />
     <!-- Library of animation and transitions -->
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet" />
-    <title>Nuevos Articulos</title>
+    <title>Pedidos</title>
 </head>
-
 <body>
     <!-- Full responsive header start -->
     <nav class="navbar navbar-expand-lg navbar-dark sticky-top">
@@ -42,13 +38,13 @@
                 <div class="mx-auto"></div>
                 <ul class="navbar-nav">
                     <li class="nav-item">
-                        <a class="nav-link active" href="./HTML/Pedidos.html">Pedidos</a>
+                        <a class="nav-link active" href="#">Pedidos</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link active" href="./HTML/Comanda.html">Comanda</a>
+                        <a class="nav-link active" href="./Comanda.html">Comanda</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link active" href="#">Inventario</a>
+                        <a class="nav-link active" href="../index.html">Inventario</a>
                     </li>
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button"
@@ -63,60 +59,71 @@
         </div>
     </nav>
     <!-- Full responsive header end -->
-    <!-- Container command products and cards start -->
-    <h2>Agregar Nuevo Producto</h2>
-    <!-- form start -->
+    <h2>Pedidos Completos</h2>
+    <!-- Contenedor card de pedidos start -->
     <div class="container-fluid">
-        <div class="row ">
-            <form class="col-md-8 mt-4 mb-4" id="formulario">
-                <div class="form-row">
-                    <div class="form-group col-md-6">
-                        <label for="inputNombre">Nombre</label>
-                        <input type="text" class="form-control" id="inputNombre" placeholder="Nombre del producto" required>
-                    </div>
-                    <div class="form-group col-md-6">
-                        <label for="inputCantidad">Cantidad</label>
-                        <input type="number" class="form-control" id="inputCantidad" placeholder="Cantidad disponible" required>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label for="inputPrecio">Precio</label>
-                    <input type="text" class="form-control" id="inputPrecio"
-                        placeholder="Costo unitario del producto en formato $XX.YY" required>
-                </div>
-                <select id="inputCategoria" class="form-control">
-                    <option selected>Otros</option>
-                    <option>Bebidas-Calientes</option>
-                    <option>Bebidas-Frias</option>
-                    <option>Panaderia</option>
-                    <option>Cafeteria</option>
-                </select>
-                <button type="submit" class="btn btn-primary mt-4 ml-1">Registrar Producto</button>
-            </form>
-            <div class="col-md-4" id="estadisticas">
-            </div>
-        </div><!-- filtro -->
-        <div class="container-Fluid mt-3" id="contenedorFiltro">
-            <div class="row justify-content-start">
-                <form class="form-group col-6 " id="formularioFiltro">
-                    <select id="filtrar" class="form-control">
-                        <option selected>Ordenar por ID</option>
-                        <option>Ordenar por Nombre</option>
-                        <option>Ordenar por Categoria</option>
-                        <option>Ordenar por Mayor Precio</option>
-                        <option>Ordenar por Menor Precio</option>
-                        <option>Ordenar por Cantidad Disponible</option>
-                    </select>
-                    <button type="submit" class="btn btn-warning mt-3">Ordenar</button>
-                </form>
-            </div>
+        <div class="row" id="contenedorPedidos"></div>
     </div>
-        <div class="container-fluid"><div class="row" id="contenedorProductos"></div>
-    </div>
-        </div>
+    <!-- Contenedor card pedidos ends -->
+    <!-- Sales pending for paid start -->
+    <div class="container-fluid ">
+        <div class="row mx-auto">
+            <!-- Cards para mesas start -->
+            <!-- Cards para mesas end -->
+                    <!-- Modal for pay is the menu for ends the sale -->
+                    <div class="modal fade" id="detallesPedido">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <form id="formularioPago">
+                                <div class="modal-header justify-content-center">
+                                    <h6 class="modal-title" id="numeroMesa"></h6>
+                                </div>
+                                <!-- all articles of car-shipping -->
+                                <div class="modal-body">
+                                    <div class="card mb-6">
+                                        <h6 class="modal-title text-center" id="nombreCliente"><strong></strong></h6>
+                                        <!-- Detalles del pedido -->
+                                        <h6 class="modal-title text-center mt-4">Detalles del Pedido</h6>
+                                        <hr>
+                                        <div class="row mx-auto" id="contenedorPedido">
+                                        </div>
+                                        <hr>
+                                        <h6 class="modal-text text-center" id="MesaTotalPagar"></h6>
+                                    </div>
+                                </div>
+                                <!-- Pay data form -->
+                                    <div class="mb-3">
+                                        <div class="row">
+                                    <div class="form-group col-8 ml-2">
+                                        <label for="inputPago">Total Pago:</label>
+                                        <input type="number" class="form-control" id="inputPago"
+                                            placeholder="Cantidad pagada en formato $XX.YY" required>
+                                    <!-- pay method -->
+                                    <label for="inputTipoPago">Forma de pago:</label>
+                                    <select id="inputTipoPago" class="form-control">
+                                        <option selected>Efectivo</option>
+                                        <option>Tarjeta</option>
+                                    </select>
+                                    </div>
 
-    <!-- form ends -->
-    <!-- Container command products end -->
+                                </div>
+                                </div>
+                                <!-- pay button -->
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary"
+                                        data-bs-dismiss="modal">Cerrar</button>
+                                    <button type="submit" class="btn btn-primary" id="pagar">Pagar</button>
+                                </div>
+                            </form>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- button of carshoping ends -->
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Sales pending for paid ends -->
     <!-- Footer start -->
     <footer class="mt-4">
         <p>&copy; LaBiblioteca 2022</p>
@@ -133,8 +140,6 @@
     <button type="button" class="subir" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
         <a href="#"><i class="fa-solid fa-coffee"></i></a>
     </button>
-
-    <!-- button of carshoping ends -->
     <!-- DEFINITION OF SCRIPT ANIMATION AND TRANSITION -->
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
     <script>
@@ -153,8 +158,6 @@
             return new bootstrap.Popover(popoverTriggerEl);
         });
     </script>
-    <!-- LINK JS -->
-    <script src="./Javascript/index.js"></script>
+    <script src="../Javascript/Pedidos.js"></script>
 </body>
-
 </html>

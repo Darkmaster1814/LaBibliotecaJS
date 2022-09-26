@@ -89,12 +89,14 @@ function generarPedido(evento)
         {
             let pedido= new Pedido(mesa,nombreCliente,detallesPedido,producto.nombre,producto.precio,cantidad,subTotal);
             pedidos.push(pedido);
-            actualizarPedidoStorage();
         }
     }
+    actualizarPedidoStorage();
     carrito=[];
+    actualizarCarritoStorage();
     imprimirCarrito();
     imprimirTotal();
+    formularioCarrito.reset();
     console.log(pedidos);
 }
 /* Imprimir los productos con codigo HTML DOM */
@@ -387,6 +389,15 @@ function obtenerCarritoStorage(){
         imprimirCarrito();
     }
 }
+/* Obtener pedidos del storage */
+function obtenerPedidoStorage()
+{
+    let pedidosJSON=localStorage.getItem("pedidos");
+    if(pedidosJSON)
+    {
+        pedidos=JSON.parse(pedidosJSON);
+    }
+}
 /* Obtener el tipo de filtro */
 function filtrarInformacion(evento)
 {
@@ -474,6 +485,7 @@ function main()
     InicializarEventos();
     obtenerProductosStorage();
     obtenerCarritoStorage();
+    obtenerPedidoStorage();
     console.log(carrito);
 }
 main();
