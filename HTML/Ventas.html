@@ -1,12 +1,10 @@
-<!-- Seccion de Agregar articulos nuevos -->
 <!DOCTYPE html>
 <html lang="es">
-<!--  -->
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!-- ETIQUETAS META FIN -->
     <!-- Library type of fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -21,10 +19,10 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootswatch@4.5.2/dist/minty/bootstrap.min.css"
         integrity="sha384-H4X+4tKc7b8s4GoMrylmy2ssQYpDHoqzPa9aKXbDwPoPUA3Ra8PA5dGzijN+ePnH" crossorigin="anonymous" />
     <!-- Reference of CSS file -->
-    <link rel="stylesheet" href="./CSS/styles.css" />
+    <link rel="stylesheet" href="../CSS/styles.css" />
     <!-- Library of animation and transitions -->
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet" />
-    <title>Nuevos Articulos</title>
+    <title>Pedidos</title>
 </head>
 
 <body>
@@ -42,16 +40,16 @@
                 <div class="mx-auto"></div>
                 <ul class="navbar-nav">
                     <li class="nav-item">
-                        <a class="nav-link active" href="./HTML/Pedidos.html">Pedidos</a>
+                        <a class="nav-link active" href="./Pedidos.html">Pedidos</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link active" href="./HTML/Comanda.html">Comanda</a>
+                        <a class="nav-link active" href="./Comanda.html">Comanda</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link active" href="#">Inventario</a>
+                        <a class="nav-link active" href="../index.html">Inventario</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link active" href="./HTML/Ventas.html">Ventas</a>
+                        <a class="nav-link active" href="#">Ventas</a>
                     </li>
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button"
@@ -66,60 +64,21 @@
         </div>
     </nav>
     <!-- Full responsive header end -->
-    <!-- Container command products and cards start -->
-    <h2>Agregar Nuevo Producto</h2>
-    <!-- form start -->
-    <div class="container-fluid">
-        <div class="row ">
-            <form class="col-md-8 mt-4 mb-4" id="formulario">
-                <div class="form-row">
-                    <div class="form-group col-md-6">
-                        <label for="inputNombre">Nombre</label>
-                        <input type="text" class="form-control" id="inputNombre" placeholder="Nombre del producto" required>
-                    </div>
-                    <div class="form-group col-md-6">
-                        <label for="inputCantidad">Cantidad</label>
-                        <input type="number" class="form-control" id="inputCantidad" placeholder="Cantidad disponible" required>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label for="inputPrecio">Precio</label>
-                    <input type="text" class="form-control" id="inputPrecio"
-                        placeholder="Costo unitario del producto en formato $XX.YY" required>
-                </div>
-                <select id="inputCategoria" class="form-control">
-                    <option selected>Otros</option>
-                    <option>Bebidas-Calientes</option>
-                    <option>Bebidas-Frias</option>
-                    <option>Panaderia</option>
-                    <option>Cafeteria</option>
-                </select>
-                <button type="submit" class="btn btn-primary mt-4 ml-1">Registrar Producto</button>
-            </form>
-            <div class="col-md-4" id="estadisticas">
-            </div>
-        </div><!-- filtro -->
-        <div class="container-Fluid mt-3" id="contenedorFiltro">
-            <div class="row justify-content-start">
-                <form class="form-group col-6 " id="formularioFiltro">
-                    <select id="filtrar" class="form-control">
-                        <option selected>Ordenar por ID</option>
-                        <option>Ordenar por Nombre</option>
-                        <option>Ordenar por Categoria</option>
-                        <option>Ordenar por Mayor Precio</option>
-                        <option>Ordenar por Menor Precio</option>
-                        <option>Ordenar por Cantidad Disponible</option>
-                    </select>
-                    <button type="submit" class="btn btn-warning mt-3">Ordenar</button>
-                </form>
-            </div>
-    </div>
-        <div class="container-fluid"><div class="row" id="contenedorProductos"></div>
-    </div>
-        </div>
-
-    <!-- form ends -->
-    <!-- Container command products end -->
+    <h2>Ventas</h2>
+    <table class="table">
+        <thead class="thead-dark">
+            <tr>
+                <th scope="col">Fecha</th>
+                <th scope="col">Mesa</th>
+                <th scope="col">Productos</th>
+                <th scope="col">Tipo de Pago</th>
+                <th scope="col">Total</th>
+            </tr>
+        </thead>
+        <!-- Contenedor de ventas -->
+        <tbody id="columnaVentas">
+        </tbody>
+    </table>
     <!-- Footer start -->
     <footer class="mt-4">
         <p>&copy; LaBiblioteca 2022</p>
@@ -131,13 +90,11 @@
         </div>
     </footer>
     <!-- Footer end -->
-    <!-- BUTTON coffe -->  
+    <!-- BUTTON coffe -->
     <!-- Button trigger modal -->
     <button type="button" class="subir" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
         <a href="#"><i class="fa-solid fa-coffee"></i></a>
     </button>
-
-    <!-- button of carshoping ends -->
     <!-- DEFINITION OF SCRIPT ANIMATION AND TRANSITION -->
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
     <script>
@@ -156,8 +113,7 @@
             return new bootstrap.Popover(popoverTriggerEl);
         });
     </script>
-    <!-- LINK JS -->
-    <script src="./Javascript/index.js"></script>
+    <script src="../Javascript/Ventas.js"></script>
 </body>
 
 </html>

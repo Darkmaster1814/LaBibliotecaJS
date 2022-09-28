@@ -84,17 +84,36 @@ function validarFormularioPago(evento)
     let tipoDePago=inputTipoPago.value;
     if(totalPagado>=totalFormulario)
     {
-        alert(`Su cambio: $${totalPagado-totalFormulario}`);
-        let pedido=new PedidoPagado(idMesa,nombreClienteFormulario,productosFormulario,cantidadesFormulario,preciosUnitariosFormulario,subTotalesFormulario,totalFormulario,tipoDePago,new Date());
+        if(totalPagado!=totalFormulario)
+        {
+            alert(`Su cambio: $${totalPagado-totalFormulario}`);
+        }
+        
+        let pedido=new PedidoPagado(idMesa,nombreClienteFormulario,productosFormulario,cantidadesFormulario,preciosUnitariosFormulario,subTotalesFormulario,totalFormulario,tipoDePago,`${(new Date()).getDate()}-${(new Date()).getMonth()+1}-${(new Date()).getFullYear()}`);
         pedidosPagados.push(pedido);
+        borrarPedido();
         console.log(pedidosPagados);
-
+        actualizarPedidoPagadosStorage();
     }
     else
     {
         alert("El pago no se puede procesar porque es menor al total");
     }
 
+}
+/* Borrar pedido que se ha pagado */
+function borrarPedido()
+{
+    while(pedidos.findIndex((pedido)=>idMesa==pedido.mesa)!=-1)
+    {
+        let index=pedidos.findIndex((pedido)=>idMesa==pedido.mesa)
+        pedidos.splice(index,1);
+        console.log(pedidos)
+    }
+    borrarPedidoHTML();
+    let cardABorrar=document.getElementById(`columna-${idMesa}`);
+    cardABorrar.remove();
+    actualizarPedidoStorage();
 }
 /* Imprimir las card de pedidos por mesa */
 function imprimirPedidos()
@@ -123,15 +142,20 @@ function imprimirPedidos()
         botonAgregarMesa.onclick=()=>imprimirPedido(pedidoMesa.numeroMesa);
     });
 }
-/* Imprimir el pedido por mesa */
-function imprimirPedido(numerodeMesa)
-{//Indice del pedido que se hizo click
-    /* variables de HTML */
+/* Borrar pedidoxmesa */
+function borrarPedidoHTML()
+{
     numeroMesa.innerHTML="";
     nombreCliente.innerHTML="";//Limpiar el pedido en el html cada que hace clic en abrir
     contenedorPedido.innerHTML="";
     MesaTotalPagar.innerHTML="";
     formularioPago.reset();
+}
+/* Imprimir el pedido por mesa */
+function imprimirPedido(numerodeMesa)
+{//Indice del pedido que se hizo click
+    /* variables de HTML */
+    borrarPedidoHTML();
     pedidosMesas.forEach((pedido)=>{
         if(pedido.numeroMesa===numerodeMesa)
         {
@@ -169,7 +193,6 @@ for(let index=0; index<mesas.length; index++)
     let pedidoXMesa=new Mesa(mesas[index],arrClientes[index],arrDetallesPedido[index],arrProductos[index],arrPrecioProductos[index],arrCantidadProductos[index],arrSubTotales[index]);//Creacion de cada objecto de cliente por mesa
     pedidosMesas.push(pedidoXMesa);
 }
-console.log(pedidosMesas);
 imprimirPedidos();
 }
 /* Junta la informacion de una misma mesa */
@@ -195,10 +218,10 @@ function unirInformacionXMesa(pedidos)
         arregloMesas.push(pedido.mesa);
     });
     cantidadMesas=new Set(arregloMesas);
-    for(let index=1; index<=cantidadMesas.size;index++)
+    for(let mes of cantidadMesas)
     {
-        mesas.push(`MESA-${index}`);//Genera un arreglo con el nombre de la mesa
-        console.log(mesas);
+        mesas.push(mes);//Genera un arreglo con el nombre de la mesa
+    console.log(mesas);
     }
     for(let index=0; index<mesas.length;index++)
     {
@@ -256,6 +279,20 @@ function actualizarPedidoStorage()
         localStorage.setItem("pedidos",pedidosJSON);
     }
 }
+/* Actualizar pedidos pagados Storage */
+function actualizarPedidoPagadosStorage()
+{
+    if(pedidosPagados.length==null)
+    {
+        localStorage.pedidosPagados.clear();
+    }
+    else
+    {
+        let pedidosPagadosJSON;
+        pedidosPagadosJSON=JSON.stringify(pedidosPagados);
+        localStorage.setItem("pedidosPagados",pedidosPagadosJSON);
+    }
+}
 /* Obtener pedidos del storage */
 function obtenerPedidoStorage()
 {
@@ -266,6 +303,16 @@ function obtenerPedidoStorage()
         unirInformacionXMesa(pedidos);
     }
 }
+/* obtener pedidos pagados del storage */
+function obtenerPedidosPagadosStorage()
+{
+    let pedidosPagadosJSON=localStorage.getItem("pedidosPagados");
+    if(pedidosPagadosJSON)
+    {
+        pedidosPagados=JSON.parse(pedidosPagadosJSON);
+    }
+}
+
 /* funciones operacionales */
 /* calcular total por pedido de mesa */
 function calcularTotalPedido(arrsubtotales){
@@ -281,11 +328,9 @@ function main()
 {
     inicializarElementos();
     InicializarEventos();
-    obtenerPedidoStorage()
+    obtenerPedidoStorage();
+    obtenerPedidosPagadosStorage();
     console.log(pedidos);
-/*     
-    obtenerProductosStorage();
-    obtenerCarritoStorage();
-    console.log(pedidos); */
+    console.log(pedidosPagados);
 }
 main();
