@@ -1,6 +1,7 @@
+/* ===========================================================VARIABLES========================================================= */
 /* Variables globales */
-let productos=[];
-let id=1;
+let productos=[];//Arreglo de productos
+let id=1;//Id de cada producto
 /* variables de nodos  */
 let formulario;
 let inputNombre;
@@ -9,24 +10,23 @@ let inputPrecio;
 let inputCategoria;
 let contenedorProductos;
 let estadisticas;
-
 /* Filtro */
 let formularioFiltro;
 let contenedorFiltro;
 let filtrar;
-
-
+/* ======================================================CLASES CONSTRUCTORAS============================================================ */
 /* Clase constructora para produtos */
 class Producto{
-    constructor(id, nombre, cantidad, precio, categoria)
+    constructor(...valores)//---------------------------------------------------------------------------------------------------------------------->Se optimizo el codigo
     {
         this.id=id;
-        this.nombre=nombre.toUpperCase();
-        this.cantidad=cantidad;
-        this.precio=precio;
-        this.categoria=categoria;
+        this.nombre=valores[1].toUpperCase();
+        this.cantidad=valores[2];
+        this.precio=valores[3];
+        this.categoria=valores[4];
     }
 }
+/* ====================================================FUNCIONES========================================================================== */
 /* inicializar los nodos dentro del HTML */
 function inicializarElementos()
 {
@@ -42,72 +42,13 @@ function inicializarElementos()
     contenedorFiltro=document.getElementById("contenedorFiltro");
     filtrar=document.getElementById("filtrar");
 }
-
 /* Inizializar los eventos en este caso el evento es un click en el boton registrar producto */
 function InicializarEventos()
 {
     formulario.onsubmit=(evento)=> validarFormulario(evento);
     formularioFiltro.onsubmit=(evento)=>filtrarInformacion(evento);
 }
-/* Obtener el tipo de filtro */
-function filtrarInformacion(evento)
-{
-    evento.preventDefault();
-    let filtro=filtrar.value;
-    if(filtro==="Ordenar por ID")
-    {
-        productos.sort((a,b)=>b.id-a.id);
-    }
-    else if(filtro==="Ordenar por Nombre")
-    {
-        productos.sort((a,b)=>{
-            if(a.nombre>b.nombre)
-            {
-                return 1;
-            }
-            else if(a.nombre<b.nombre)
-            {
-                return -1;
-            }
-            else
-            {
-                return 0;
-            }
-        });
-    }
-    else if(filtro==="Ordenar por Categoria")
-    {
-        productos.sort((a,b)=>{
-            if(a.categoria>b.categoria)
-            {
-                return 1;
-            }
-            else if(a.categoria<b.categoria)
-            {
-                return -1;
-            }
-            else
-            {
-                return 0;
-            }
-        });
-    }
-    else if(filtro==="Ordenar por Mayor Precio")
-    {
-        productos.sort((a,b)=>b.precio-a.precio);
-    }
-    else if(filtro==="Ordenar por Menor Precio")
-    {
-        productos.sort((a,b)=>a.precio-b.precio);
-    }
-    else if(filtro==="Ordenar por Cantidad Disponible")
-    {
-        productos.sort((a,b)=>b.cantidad-a.cantidad);
-    }
-    formulario.reset();//Reinicia el nodo formulario evitando que se dupliquen el HTML agregado de los articulos en el innerHTML
-    imprimirProductos();
-}
-/* obtener los valores de los nodos dados en el HTML */
+/* obtener los valores de los nodos dados en el HTML y agrega un producto nuevo */
 function validarFormulario(evento){
     evento.preventDefault();//Elimina el reinicio por default que da el boton
     let nombre=inputNombre.value;
@@ -119,7 +60,7 @@ function validarFormulario(evento){
         if(precio>0)
         {
         let producto= new Producto(id,nombre,cantidad,precio,categoria);
-        id+=1;//Crear id unicos
+        id++//Crear id unicos                                                                                                                                                     <-------SE optimizo
         formulario.reset();//Reinicia el nodo formulario evitando que se dupliquen el HTML agregado de los articulos en el innerHTML
         productos.push(producto);
         actualizarProductosStorage();
@@ -148,8 +89,9 @@ function eliminarProducto(idProducto)
     let columnaEstadisticaBorrar=document.getElementById("Estadisticas-Inventario");
     columnaEstadisticaBorrar.remove();
     imprimirEstadisticas(); 
-
 }
+
+/* =================================================================MODIFICACION DEL DOM============================================================================== */
 /* Imprimir los productos con codigo HTML DOM */
 function imprimirProductos(){
     contenedorProductos.innerHTML="";//Crear el espacio para imprimir el HTML en el contenedor
@@ -206,11 +148,10 @@ function imprimirEstadisticas()
     estadisticas.append(column);
     }
 }
-/* STORAGE Y JSON */
-/* actualizar el storage local con el JSON */
+/*=========================================================================== STORAGE Y JSON========================================================================== */
+/* actualizar el storage local con el JSON para los productos */
 function actualizarProductosStorage()
 {
-    console.log(productos.length)
         if(productos.length==null)
         {
             localStorage.clear();
@@ -225,7 +166,6 @@ function actualizarProductosStorage()
 /* Obtener el storage al comienzo de la carga de la pag */
 function obtenerProductosStorage() {
     let productosJSON = localStorage.getItem("productos");
-    console.log(productos.length)
     if(productosJSON)
     {
         productos = JSON.parse(productosJSON);
@@ -233,7 +173,7 @@ function obtenerProductosStorage() {
         {
             id=productos[productos.length-1].id+1;
         }
-        if(productos.length==0)
+        else if(productos.length==0)
         {
             id=1;
         }
@@ -246,6 +186,46 @@ function obtenerProductosStorage() {
         ocultarFiltro();
     }
 }
+/* ==============================================================FUNCIONES ESPECIFICAS DE LA PAGINA=================================================== */
+/* Obtener el tipo de filtro */
+function filtrarInformacion(evento)
+{
+    evento.preventDefault();
+    let filtro=filtrar.value;
+    if(filtro==="Ordenar por ID")
+    {
+        productos.sort((a,b)=>b.id-a.id);
+    }
+    else if(filtro==="Ordenar por Nombre")
+    {
+        productos.sort((a,b)=>
+        { 
+            let val=(a.nombre>b.nombre) ?  1 : ((a.nombre<b.nombre) ? -1 : 0);//--------------------------------------------------------------------------------------------------------->Se optimizo codigo                                                                                                
+            return val;
+        });
+    }
+    else if(filtro==="Ordenar por Categoria")
+    {
+        productos.sort((a,b)=>{
+            let val=(a.categoria>b.categoria) ? 1 : ((a.categoria<b.categoria) ? -1 : 0);//---------------------------------------------------------------------------------------------->Se optimizo codigo
+            return val;
+        });
+    }
+    else if(filtro==="Ordenar por Mayor Precio")
+    {
+        productos.sort((a,b)=>b.precio-a.precio);
+    }
+    else if(filtro==="Ordenar por Menor Precio")
+    {
+        productos.sort((a,b)=>a.precio-b.precio);
+    }
+    else if(filtro==="Ordenar por Cantidad Disponible")
+    {
+        productos.sort((a,b)=>b.cantidad-a.cantidad);
+    }
+    formulario.reset();//Reinicia el nodo formulario evitando que se dupliquen el HTML agregado de los articulos en el innerHTML
+    imprimirProductos();
+}
 /* mostrar filtro */
 function mostrarFiltro()
 {
@@ -255,7 +235,6 @@ function ocultarFiltro()
 {
     contenedorFiltro.hidden=true;
 }
-/* funcionalidades de la pagina */
 /* Calcular costo del inventario */
 function calcularCosto(productos)
 {
@@ -283,7 +262,7 @@ function calcularMin(productos)
     minVal=(minArr[0]).nombre;
     return minVal;
 }
-/* Fuction main */
+/* ==========================================================================INICIO DE EJECUCION DEL PROGRAMA=============================================================================== */
 function main()
 {
     inicializarElementos();
@@ -291,4 +270,3 @@ function main()
     obtenerProductosStorage();
 }
 main();
-

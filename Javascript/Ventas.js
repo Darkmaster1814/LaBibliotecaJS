@@ -1,18 +1,18 @@
+/* ===========================================VARIABLES===================================================== */
 /* Variables globles */
 let pedidosPagados=[];
 /* nodos para generar tabla de ventas */
 let columnasVentas;
+/* ==============================================EVENTOS Y EL DOM========================================== */
 function inicializarElementos()
 {
     columnasVentas=document.getElementById("columnaVentas");
 }
 function InicializarEventos()
 {
-    if(pedidosPagados!==[])
-    {
-        imprimirPedidosPagados();
-    }
+        pedidosPagados!==[] && imprimirPedidosPagados();//------------------------------------------------------------------------------------->sE OPTIMIZÓ CODIGO
 }
+/* ==========================================================MANIPULACION DEL DOM================================================ */
 /* Imprimir la tabla de pedidos pagados */
 function imprimirPedidosPagados()
 {
@@ -28,23 +28,19 @@ function imprimirPedidosPagados()
         <td>$${pedidoPagado.totalPedido}</td>
         `;
         columnasVentas.append(column);
-    })
+    });
 }
 /* obtener pedidos pagados del storage */
 function obtenerPedidosPagadosStorage()
 {
     let pedidosPagadosJSON=localStorage.getItem("pedidosPagados");
-    if(pedidosPagadosJSON)
-    {
-        pedidosPagados=JSON.parse(pedidosPagadosJSON);
-    }
+        pedidosPagados=pedidosPagadosJSON && JSON.parse(pedidosPagadosJSON);//--------------------------------------------------------------------------------------------------------------------------->Se optimizó codigo
 }
-/* Función principal o main */
+/* ==========================================================================INICIO DE EJECUCION DEL PROGRAMA=============================================================================== */
 function main()
 {
     inicializarElementos();
     obtenerPedidosPagadosStorage();
     InicializarEventos();
-
 }
 main();

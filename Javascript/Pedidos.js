@@ -1,16 +1,19 @@
+/* =============================================VARIABLES======================================================== */
 /* Variables */
 let pedidos=[];
 let mesas=[];//Mesas
 let pedidosMesas=[]//Pedidos de las mesas
-let pedidosPagados=[];
+let pedidosPagados=[];//Pedidos que han sido pagados
+let totalParaMostrar;//Total para impresion
+let iva;//subtotal de pago sin iva
 /* Variables formulario */
-let idMesa;
-let nombreClienteFormulario;
-let totalFormulario;
-let productosFormulario;
-let cantidadesFormulario;
-let preciosUnitariosFormulario;
-let subTotalesFormulario;
+let idMesa;//Id de cada mesa que hizo pedido
+let nombreClienteFormulario;//Nombre del cliente
+let totalFormulario;//Total generado por mesa
+let productosFormulario;//Productos pedidos por mesa
+let cantidadesFormulario;//Cantidades de productos por mesa
+let preciosUnitariosFormulario;//Precios de productos pedidos por mesa
+let subTotalesFormulario;//Subtotal por mesa 
 /* variables nodos */
 let contenedorPedidos;
 let numeroMesa;
@@ -20,6 +23,7 @@ let MesaTotalPagar;
 let formularioPago;
 let inputPago;
 let inputTipoPago;
+/* ======================================================CLASES CONSTRUCTORAS========================================================= */
 /* Clase mesa */
 class Mesa{
     constructor(numeroMesa,nombreCliente,arrDetallesPedido,arrNombreProductos,arrPreciosUnitario,arrCantidades,arrSubTotales)
@@ -35,17 +39,18 @@ class Mesa{
 }
 /* Clase para pedidos */
 class Pedido{
-    constructor(mesa,nombreCliente,detallesPedido,nombreProducto,precio,cantidad,subTotal)
+    constructor(...pedidosFormados)//------------------------------------------------------------------------------------------------------------------------------>Se optimizo codigo
     {
-        this.mesa=mesa;
-        this.nombreCliente=nombreCliente;
-        this.detallesPedido=detallesPedido;
-        this.nombreProducto=nombreProducto;
-        this.precio=precio;
-        this.cantidad=cantidad;
-        this.subTotal=subTotal;
+        this.mesa=pedidosFormados[0];
+        this.nombreCliente=pedidosFormados[1];
+        this.detallesPedido=pedidosFormados[2];
+        this.nombreProducto=pedidosFormados[3];
+        this.precio=pedidosFormados[4];
+        this.cantidad=pedidosFormados[5];
+        this.subTotal=pedidosFormados[6];
     }
 }
+/* Clase de pedidos pagados */
 class PedidoPagado{
     constructor(idMesa,cliente,productosFormulario,cantidadesFormulario,preciosUnitariosFormulario,subTotalesFormulario,totalPedido,tipoDePago,fecha)
     {
@@ -60,6 +65,7 @@ class PedidoPagado{
         this.fecha=fecha;
     }
 }
+/* ==========================================================FUNCIONES=============================================== */
 /* inicializar los nodos dentro del HTML */
 function inicializarElementos()
 {
@@ -71,7 +77,8 @@ function inicializarElementos()
     formularioPago=document.getElementById("formularioPago");
     inputPago=document.getElementById("inputPago");
     inputTipoPago=document.getElementById("inputTipoPago");
-}   
+}
+/* inicializar eventos */   
 function InicializarEventos()
 {
     formularioPago.onsubmit=(evento)=> validarFormularioPago(evento);
@@ -84,35 +91,29 @@ function validarFormularioPago(evento)
     let tipoDePago=inputTipoPago.value;
     if(totalPagado>=totalFormulario)
     {
-        if(totalPagado!=totalFormulario)
-        {
-            alert(`Su cambio: $${totalPagado-totalFormulario}`);
-        }
-        
+        (totalPagado!=totalFormulario) && alert(`Su cambio: $${totalPagado-totalFormulario}`);//---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------->Se optimizo codigo
         let pedido=new PedidoPagado(idMesa,nombreClienteFormulario,productosFormulario,cantidadesFormulario,preciosUnitariosFormulario,subTotalesFormulario,totalFormulario,tipoDePago,`${(new Date()).getDate()}-${(new Date()).getMonth()+1}-${(new Date()).getFullYear()}`);
         pedidosPagados.push(pedido);
         borrarPedido();
-        console.log(pedidosPagados);
         actualizarPedidoPagadosStorage();
     }
     else
     {
         alert("El pago no se puede procesar porque es menor al total");
     }
-
 }
+/* =====================================================MODIFICACION DEL DOM============================================ */
 /* Borrar pedido que se ha pagado */
 function borrarPedido()
 {
     while(pedidos.findIndex((pedido)=>idMesa==pedido.mesa)!=-1)
     {
-        let index=pedidos.findIndex((pedido)=>idMesa==pedido.mesa)
+        let index=pedidos.findIndex((pedido)=>idMesa==pedido.mesa);
         pedidos.splice(index,1);
-        console.log(pedidos)
     }
     borrarPedidoHTML();
     let cardABorrar=document.getElementById(`columna-${idMesa}`);
-    cardABorrar.remove();
+    cardABorrar.remove();//Borrar HTML del card de pedido completo (desocupa la mesa que pago)
     actualizarPedidoStorage();
 }
 /* Imprimir las card de pedidos por mesa */
@@ -139,7 +140,7 @@ function imprimirPedidos()
             `;
         contenedorPedidos.append(column);
         let botonAgregarMesa=document.getElementById(`boton-${pedidoMesa.numeroMesa}`);
-        botonAgregarMesa.onclick=()=>imprimirPedido(pedidoMesa.numeroMesa);
+        botonAgregarMesa.onclick=()=>imprimirPedido(pedidoMesa.numeroMesa);//boton para desplegar modal con detalles del pedido
     });
 }
 /* Borrar pedidoxmesa */
@@ -170,10 +171,14 @@ function imprimirPedido(numerodeMesa)
             nombreCliente.innerHTML=`${pedido.nombreCliente}`;
             MesaTotalPagar.innerHTML=`Total: $${calcularTotalPedido(pedido.arrSubTotales)}`;
             contenedorPedido.innerHTML=`${imprimirPedidoxPedido(pedido.arrNombreProductos,pedido.arrCantidades,pedido.arrPreciosUnitario,pedido.arrSubTotales,pedido.arrDetallesPedido)}`;
+        totalParaMostrar=Math.round((calcularTotalPedido(pedido.arrSubTotales)-(0.16)*calcularTotalPedido(pedido.arrSubTotales))*100)/100;//Calcular subtotal sin iva
+        iva=(0.16)*calcularTotalPedido(pedido.arrSubTotales);
         }
+        let botonImprimir=document.getElementById("imprimir")
+        botonImprimir.onclick=()=>imprimirPDF();
     });
 }
-/* Imprimir pedido por pedido por mesa  en el modal*/
+/* Imprimir pedido por pedido(producto por producto) por mesa  en el modal*/
 function imprimirPedidoxPedido(arrNombreProductos,arrCantidades,arrPreciosUnitario,arrSubTotales,arrDetallesPedido)
 {
     let numeroPedido=1;
@@ -181,7 +186,7 @@ function imprimirPedidoxPedido(arrNombreProductos,arrCantidades,arrPreciosUnitar
     for(let index=0; index<arrNombreProductos.length;index++)
     {
         pedidoString+=`${numeroPedido}) ${arrNombreProductos[index]}:  ${arrCantidades[index]} PZ X $${arrPreciosUnitario[index]}= $${arrSubTotales[index]}<br>Detalles: ${arrDetallesPedido[index]}<br>`;
-        numeroPedido++;
+        numeroPedido++;//-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------->Se optimizo codigo
     }
     return pedidoString;
 }
@@ -242,29 +247,52 @@ function unirInformacionXMesa(pedidos)
                 }
                 if(detalles!=pedido.detallesPedido)//Agrega los detalles del pedido sin repeticion
                 {
-                    if(detalles2!=pedido.detallesPedido)
+                    if(detalles2!=pedido.detallesPedido)//Si los detalles no se repiten entonces agrega los detalles al arr
                     {
-                        arrDetallePedido.push(pedido.detallesPedido); 
+                        arrDetallePedido.push(pedido.detallesPedido); //Guarda todos los detalles por comanda generada
                     }
-                    detalles2=pedido.detallesPedido;
+                    detalles2=pedido.detallesPedido;//Guarda los detalles que no se repitieron
                 }
                 arrProductosxMesa.push(pedido.nombreProducto);
                 arrPrecioProducto.push(pedido.precio);
                 arrCantidadProducto.push(pedido.cantidad);
                 arrSubtotal.push(pedido.subTotal);
             }
-            detalles=pedido.detallePedido;
+            detalles=pedido.detallePedido;//Guarda los detalles que fueron encontrados por mesa
             });
+            /* Guarda el arreglo de informacion de cada mesa en un arreglo para todas las mesas que generaron pedido */
         arrClientes.push(cliente);
         arrDetallesPedido.push(arrDetallePedido);
         arrProductos.push(arrProductosxMesa);
         arrPrecioProductos.push(arrPrecioProducto);
         arrCantidadProductos.push(arrCantidadProducto);
         arrSubTotales.push(arrSubtotal);
-    }
+    }//Crea un objeto de tipo mesa(lo estructura y da formato antes de pasarlo por el constructor)
     crearMesas(mesas,arrClientes,arrDetallesPedido,arrProductos,arrPrecioProductos,arrCantidadProductos,arrSubTotales);//Llama la funcion para crear los objectos de pedido por mesa
 }
-/* STORAGE */
+/* Imprimir pedido en PDF para pago */
+function imprimirPDF()
+{
+    let doc=new jsPDF();//Crear objeto tipo jsPDF
+    /* Estructura de pdf labels */
+    let logotipo=document.getElementById("logotipo").innerText;
+    let mesaText=numeroMesa.innerText;
+    let client="Cliente: "+nombreCliente.innerText;
+    let division="\n______________________________________________________________________\n"
+    let productos=contenedorPedido.innerText+division
+    +`\nSubtotal: $${totalParaMostrar}`+"\nIVA: 16%\n"+MesaTotalPagar.innerText;
+/* info del pdf */
+doc.setFontSize(25);//Tamaño de texto
+doc.text(logotipo,78,10);
+doc.setFontSize(16);
+doc.text(mesaText,90,20);
+doc.text(client, 10,30);
+doc.text(division,5,15);
+doc.text(productos, 10,40);
+//Genera pdf
+doc.save("pedido.pdf");
+}
+/* ============================================================LOCAL STORAGE Y JSON======================================= */
 /* Actualizar pedidos storage */
 function actualizarPedidoStorage()
 {
@@ -300,20 +328,16 @@ function obtenerPedidoStorage()
     if(pedidosJSON)
     {
         pedidos=JSON.parse(pedidosJSON);
-        unirInformacionXMesa(pedidos);
+        unirInformacionXMesa(pedidos);//de acuerdo a los pedidos formados, ordena la informacion junta por mesa
     }
 }
 /* obtener pedidos pagados del storage */
 function obtenerPedidosPagadosStorage()
-{
+{//Funciona como un if tradicional o existe y se guarda en el JSON o pedidosPagados es un arreglo vacio
     let pedidosPagadosJSON=localStorage.getItem("pedidosPagados");
-    if(pedidosPagadosJSON)
-    {
-        pedidosPagados=JSON.parse(pedidosPagadosJSON);
-    }
+        pedidosPagados=JSON.parse(pedidosPagadosJSON)||[];//----------------------------------------------------------------------------->Se optimizo codigo
 }
-
-/* funciones operacionales */
+/* ==============================================================FUNCIONES ESPECIFICAS DE LA PAGINA=================================================== */
 /* calcular total por pedido de mesa */
 function calcularTotalPedido(arrsubtotales){
     let total=0;
@@ -323,14 +347,12 @@ function calcularTotalPedido(arrsubtotales){
     }
     return total;
 }
-/* Función principal o main */
+/* ==========================================================================INICIO DE EJECUCION DEL PROGRAMA=============================================================================== */
 function main()
 {
     inicializarElementos();
     InicializarEventos();
     obtenerPedidoStorage();
     obtenerPedidosPagadosStorage();
-    console.log(pedidos);
-    console.log(pedidosPagados);
 }
 main();
