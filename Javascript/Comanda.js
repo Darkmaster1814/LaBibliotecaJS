@@ -68,7 +68,11 @@ function inicializarElementos()
 function InicializarEventos()
 {
     formularioFiltro.onsubmit=(evento)=>filtrarInformacion(evento);
-    formularioCarrito.onsubmit=(evento)=>generarPedido(evento);
+    formularioCarrito.onsubmit=(evento)=>
+    {
+        evento.preventDefault();
+        alertaPregunta(evento);
+    }
 }
 /* Generar un pedido */
 function generarPedido(evento)
@@ -76,7 +80,7 @@ function generarPedido(evento)
     evento.preventDefault();
     let mesa=inputMesa.value;
     let nombreCliente=inputNombreCliente.value||"Cliente";//----------------------------------------------------------------------------------->Se optimizo codigo
-    let detallesPedido=inputDetallesPedido.value||"Ninguo";//---------------------------------------------------------------------------------->Se optimizo codigo
+    let detallesPedido=inputDetallesPedido.value||"Ninguno";//---------------------------------------------------------------------------------->Se optimizo codigo
     for(let producto of productos)
     {
         subTotal=0;//reset de subtotal al formar pedido
@@ -100,7 +104,7 @@ function generarPedido(evento)
     imprimirCarrito();
     imprimirTotal();
     formularioCarrito.reset();
-    console.log(pedidos);
+    
 }
 /* Funcion crear carrito de compras ---------------------------------------------------------------AQUIMEQUEDE*/
 function agregarCarritoDeCompras(idProducto,cantidadInicial)
@@ -119,10 +123,11 @@ function agregarCarritoDeCompras(idProducto,cantidadInicial)
         imprimirProductos();
         imprimirCarrito(idProducto);
         imprimirTotal();
+        alertaExito(`${productos[indexAgregar].nombre} agregado a comanda`)
     }
     else
     {
-        alert("Sin stock");
+        alertaError(`${productos[indexAgregar].nombre} no tiene stock`);
     }
 }
 /* Eliminar producto de carrito de compras */
@@ -134,6 +139,7 @@ function eliminarDeCarrito(carId)
         /* actualiza el stock de productos */
     actualizarStock(indexABorrar);
     imprimirProductos();
+    alertaExito(`${carrito[indexABorrar].nombre} ha sido eliminado`);
     carrito.splice(indexABorrar,1);
     imprimirTotal();
     columnaABorrar.remove();
@@ -194,7 +200,7 @@ function imprimirProductos(){
             }//Si el evento de apretar el boton eliminar pasa activa la arrow del metodo elimianr el producto.id
             else
             {
-                alert("No hay stock");
+                alertaError(`${producto.nombre} no tiene stock`);
             }
         };
         /* Agregar y quitar producto  acceso a elementos para botones*/
@@ -210,7 +216,7 @@ function imprimirProductos(){
             }
             else
             {
-                alert("No hay stock");
+                alertaError(`${producto.nombre} no tiene stock`);
             }
 
         };
@@ -224,7 +230,7 @@ function imprimirProductos(){
             }
             else
             {
-                alert("Debe haber al menos un artículo");
+                alertaWarning("Ingrese al menos un producto");
             }
         };
     });//Termina foreach
@@ -443,6 +449,51 @@ function calcularTotal(){
     let totalPrecio=0;
     carrito.forEach((car)=>{totalPrecio+=car.subTotal});
     return totalPrecio;
+}
+/* ========================================================================== ALERTAS ====================================================================================================== */
+function alertaError(mensaje) {
+    Swal.fire({
+        icon: 'error',
+        text: mensaje,
+    });
+}
+function alertaWarning(mensaje) {
+    Swal.fire({
+        icon: 'warning',
+        text: mensaje,
+    });
+}
+function alertaExito(mensaje) {
+    const Toast = Swal.mixin({
+        toast: true,
+        position: 'top-end',
+        showConfirmButton: false,
+        timer: 2000,
+        timerProgressBar: true,
+    })
+
+    Toast.fire({
+        icon: 'success',
+        text: mensaje
+    })
+}
+function alertaPregunta(evento) {
+    Swal.fire({
+        icon: 'warning',
+        text: `¿Estas seguro que generar el pedido?`,
+        showDenyButton: true,
+        showCancelButton: false,
+        confirmButtonText: 'Generar Pedido',
+        denyButtonText: `Cancelar`,
+    }).then((result) => {
+        /* Read more about isConfirmed, isDenied below */
+        if (result.isConfirmed) {
+            generarPedido(evento);
+            alertaExito(`Pedido generado`)
+        } else if (result.isDenied) {
+            alertaError("Operación cancelada");
+        }
+    })
 }
 /* ==========================================================================INICIO DE EJECUCION DEL PROGRAMA=============================================================================== */
 function main()

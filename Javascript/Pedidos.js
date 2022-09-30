@@ -81,7 +81,11 @@ function inicializarElementos()
 /* inicializar eventos */   
 function InicializarEventos()
 {
-    formularioPago.onsubmit=(evento)=> validarFormularioPago(evento);
+    formularioPago.onsubmit=(evento)=>
+    {
+        evento.preventDefault();
+        alertaPregunta(evento);
+    }
 }
 /* validar Formulario de pago */
 function validarFormularioPago(evento)
@@ -91,15 +95,15 @@ function validarFormularioPago(evento)
     let tipoDePago=inputTipoPago.value;
     if(totalPagado>=totalFormulario)
     {
-        (totalPagado!=totalFormulario) && alert(`Su cambio: $${totalPagado-totalFormulario}`);//---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------->Se optimizo codigo
         let pedido=new PedidoPagado(idMesa,nombreClienteFormulario,productosFormulario,cantidadesFormulario,preciosUnitariosFormulario,subTotalesFormulario,totalFormulario,tipoDePago,`${(new Date()).getDate()}-${(new Date()).getMonth()+1}-${(new Date()).getFullYear()}`);
         pedidosPagados.push(pedido);
         borrarPedido();
         actualizarPedidoPagadosStorage();
+        alertaExito("Pagado");
     }
     else
     {
-        alert("El pago no se puede procesar porque es menor al total");
+        alertaError("El pago ingresado es menor al total");
     }
 }
 /* =====================================================MODIFICACION DEL DOM============================================ */
@@ -226,7 +230,6 @@ function unirInformacionXMesa(pedidos)
     for(let mes of cantidadMesas)
     {
         mesas.push(mes);//Genera un arreglo con el nombre de la mesa
-    console.log(mesas);
     }
     for(let index=0; index<mesas.length;index++)
     {
@@ -291,6 +294,7 @@ doc.text(division,5,15);
 doc.text(productos, 10,40);
 //Genera pdf
 doc.save("pedido.pdf");
+alertaExito(`PDF generado`);
 }
 /* ============================================================LOCAL STORAGE Y JSON======================================= */
 /* Actualizar pedidos storage */
@@ -346,6 +350,50 @@ function calcularTotalPedido(arrsubtotales){
         total+=subTotal;
     }
     return total;
+}
+/* ========================================================================== ALERTAS ====================================================================================================== */
+function alertaError(mensaje) {
+    Swal.fire({
+        icon: 'error',
+        text: mensaje,
+    });
+}
+function alertaWarning(mensaje) {
+    Swal.fire({
+        icon: 'warning',
+        text: mensaje,
+    });
+}
+function alertaExito(mensaje) {
+    const Toast = Swal.mixin({
+        toast: true,
+        position: 'top-end',
+        showConfirmButton: false,
+        timer: 2000,
+        timerProgressBar: true,
+    })
+
+    Toast.fire({
+        icon: 'success',
+        text: mensaje
+    })
+}
+function alertaPregunta(evento) {
+    Swal.fire({
+        icon: 'warning',
+        text: `¿Confirmar el pago?`,
+        showDenyButton: true,
+        showCancelButton: false,
+        confirmButtonText: 'Si',
+        denyButtonText: `No`,
+    }).then((result) => {
+        /* Read more about isConfirmed, isDenied below */
+        if (result.isConfirmed) {
+            validarFormularioPago(evento);
+        } else if (result.isDenied) {
+            alertaError("Operación cancelada");
+        }
+    })
 }
 /* ==========================================================================INICIO DE EJECUCION DEL PROGRAMA=============================================================================== */
 function main()

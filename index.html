@@ -2,6 +2,7 @@
 <!DOCTYPE html>
 <html lang="es">
 <!--  -->
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -20,7 +21,9 @@
     <!-- library Bootstrap -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootswatch@4.5.2/dist/minty/bootstrap.min.css"
         integrity="sha384-H4X+4tKc7b8s4GoMrylmy2ssQYpDHoqzPa9aKXbDwPoPUA3Ra8PA5dGzijN+ePnH" crossorigin="anonymous" />
-    <!-- Reference of CSS file -->
+    <!-- Link toastify -->
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
+        <!-- Reference of CSS file -->
     <link rel="stylesheet" href="./CSS/styles.css" />
     <!-- Library of animation and transitions -->
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet" />
@@ -66,98 +69,136 @@
         </div>
     </nav>
     <!-- Full responsive header end -->
-    <!-- Container command products and cards start -->
     <h2>Agregar Nuevo Producto</h2>
-    <!-- form start -->
+    <!-- Identificarse para editar o agregar productos start -->
     <div class="container-fluid">
-        <div class="row ">
-            <form class="col-md-8 mt-4 mb-4" id="formulario">
-                <div class="form-row">
-                    <div class="form-group col-md-6">
-                        <label for="inputNombre">Nombre</label>
-                        <input type="text" class="form-control" id="inputNombre" placeholder="Nombre del producto" required>
+        <div class="row">
+                <div id="contenedorIdentificacion">
+                    <div class="container-fluid" id="contenedorIdentificacion">
+                        <form id="formularioIdentificacion">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div>
+                                        <label class="form-label mt-4">Identificate para acceder al inventario:</label>
+                                        <input type="password" class="form-control mb-4"
+                                            placeholder="Ingresa la contraseña" id="inputPassword" required />
+                                    </div>
+                                </div>
+                                <div class="col-md-4 d-flex align-items-end">
+                                    <button type="submit" class="btn btn-secondary mb-4">
+                                        Acceder
+                                    </button>
+                                </div>
+                            </div>
+                        </form>
                     </div>
-                    <div class="form-group col-md-6">
-                        <label for="inputCantidad">Cantidad</label>
-                        <input type="number" class="form-control" id="inputCantidad" placeholder="Cantidad disponible" required>
+                    <!-- Identificarse para editar o agregar productos end -->
+                </div>
+                <div class="col-md-6">
+                    <div id="contenedorUsuario" hidden>
+                        <h3 id="textoUsuario">Bienvenido:</h3>
                     </div>
                 </div>
-                <div class="form-group">
-                    <label for="inputPrecio">Precio</label>
-                    <input type="text" class="form-control" id="inputPrecio"
-                        placeholder="Costo unitario del producto en formato $XX.YY" required>
+        </div>
+    </div>
+            <!-- Container command products and cards start -->
+            <!-- form start -->
+            <div class="container-fluid">
+                <div class="row ">
+                    <form class="col-md-8 mt-4 mb-4" id="formulario">
+                        <div class="form-row">
+                            <div class="form-group col-md-6">
+                                <label for="inputNombre">Nombre</label>
+                                <input type="text" class="form-control" id="inputNombre"
+                                    placeholder="Nombre del producto" required>
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label for="inputCantidad">Cantidad</label>
+                                <input type="number" class="form-control" id="inputCantidad"
+                                    placeholder="Cantidad disponible" required>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="inputPrecio">Precio</label>
+                            <input type="text" class="form-control" id="inputPrecio"
+                                placeholder="Costo unitario del producto en formato $XX.YY" required>
+                        </div>
+                        <select id="inputCategoria" class="form-control">
+                            <option selected>Otros</option>
+                            <option>Bebidas-Calientes</option>
+                            <option>Bebidas-Frias</option>
+                            <option>Panaderia</option>
+                            <option>Cafeteria</option>
+                        </select>
+                        <button type="submit" class="btn btn-primary mt-4 ml-1">Registrar Producto</button>
+                    </form>
+                    <div class="col-md-4" id="estadisticas">
+                    </div>
+                </div><!-- filtro -->
+                <div class="container-Fluid mt-3" id="contenedorFiltro">
+                    <div class="row justify-content-start">
+                        <form class="form-group col-6 " id="formularioFiltro">
+                            <select id="filtrar" class="form-control">
+                                <option selected>Ordenar por ID</option>
+                                <option>Ordenar por Nombre</option>
+                                <option>Ordenar por Categoria</option>
+                                <option>Ordenar por Mayor Precio</option>
+                                <option>Ordenar por Menor Precio</option>
+                                <option>Ordenar por Cantidad Disponible</option>
+                            </select>
+                            <button type="submit" class="btn btn-warning mt-3">Ordenar</button>
+                        </form>
+                    </div>
                 </div>
-                <select id="inputCategoria" class="form-control">
-                    <option selected>Otros</option>
-                    <option>Bebidas-Calientes</option>
-                    <option>Bebidas-Frias</option>
-                    <option>Panaderia</option>
-                    <option>Cafeteria</option>
-                </select>
-                <button type="submit" class="btn btn-primary mt-4 ml-1">Registrar Producto</button>
-            </form>
-            <div class="col-md-4" id="estadisticas">
+                <div class="container-fluid">
+                    <div class="row" id="contenedorProductos"></div>
+                </div>
             </div>
-        </div><!-- filtro -->
-        <div class="container-Fluid mt-3" id="contenedorFiltro">
-            <div class="row justify-content-start">
-                <form class="form-group col-6 " id="formularioFiltro">
-                    <select id="filtrar" class="form-control">
-                        <option selected>Ordenar por ID</option>
-                        <option>Ordenar por Nombre</option>
-                        <option>Ordenar por Categoria</option>
-                        <option>Ordenar por Mayor Precio</option>
-                        <option>Ordenar por Menor Precio</option>
-                        <option>Ordenar por Cantidad Disponible</option>
-                    </select>
-                    <button type="submit" class="btn btn-warning mt-3">Ordenar</button>
-                </form>
-            </div>
-    </div>
-        <div class="container-fluid"><div class="row" id="contenedorProductos"></div>
-    </div>
-        </div>
 
-    <!-- form ends -->
-    <!-- Container command products end -->
-    <!-- Footer start -->
-    <footer class="mt-4">
-        <p>&copy; LaBiblioteca 2022</p>
-        <p>Desarrollo por DarkMaster1814</p>
-        <div class="redes">
-            <i class="fa-brands fa-facebook"></i>
-            <i class="fa-brands fa-twitter"></i>
-            <i class="fa-brands fa-instagram"></i>
-        </div>
-    </footer>
-    <!-- Footer end -->
-    <!-- BUTTON coffe -->  
-    <!-- Button trigger modal -->
-    <button type="button" class="subir" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
-        <a href="#"><i class="fa-solid fa-coffee"></i></a>
-    </button>
-
-    <!-- button of carshoping ends -->
-    <!-- DEFINITION OF SCRIPT ANIMATION AND TRANSITION -->
-    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
-    <script>
-        AOS.init();
-    </script>
-    <!-- LINK JS for BOOTSTRAP -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous">
-    </script>
-    <!-- Link JS for popover -->
-    <script>
-        var popoverTriggerList = [].slice.call(
-            document.querySelectorAll('[data-bs-toggle="popover"]')
-        );
-        var popoverList = popoverTriggerList.map(function (popoverTriggerEl) {
-            return new bootstrap.Popover(popoverTriggerEl);
-        });
-    </script>
-    <!-- LINK JS -->
-    <script src="./Javascript/index.js"></script>
+            <!-- form ends -->
+            <!-- Container command products end -->
+            <!-- Footer start -->
+            <footer class="mt-4">
+                <p>&copy; LaBiblioteca 2022</p>
+                <p>Desarrollo por DarkMaster1814</p>
+                <div class="redes">
+                    <i class="fa-brands fa-facebook"></i>
+                    <i class="fa-brands fa-twitter"></i>
+                    <i class="fa-brands fa-instagram"></i>
+                </div>
+            </footer>
+            <!-- Footer end -->
+            <!-- BUTTON coffe -->
+            <!-- Button trigger modal -->
+            <button type="button" class="subir" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
+                <a href="#"><i class="fa-solid fa-coffee"></i></a>
+            </button>
+            <!-- Toastify alert cdn -->
+            <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
+            <!-- Sweet alert cdn -->
+            <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+            <!-- button of carshoping ends -->
+            <!-- DEFINITION OF SCRIPT ANIMATION AND TRANSITION -->
+            <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+            <script>
+                AOS.init();
+            </script>
+            <!-- LINK JS for BOOTSTRAP -->
+            <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+                integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+                crossorigin="anonymous">
+            </script>
+            <!-- Link JS for popover -->
+            <script>
+                var popoverTriggerList = [].slice.call(
+                    document.querySelectorAll('[data-bs-toggle="popover"]')
+                );
+                var popoverList = popoverTriggerList.map(function (popoverTriggerEl) {
+                    return new bootstrap.Popover(popoverTriggerEl);
+                });
+            </script>
+            <!-- LINK JS -->
+            <script src="./Javascript/index.js"></script>
 </body>
 
 </html>
