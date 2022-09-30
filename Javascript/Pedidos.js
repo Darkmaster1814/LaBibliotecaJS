@@ -189,7 +189,7 @@ function imprimirPedidoxPedido(arrNombreProductos,arrCantidades,arrPreciosUnitar
     let pedidoString="";
     for(let index=0; index<arrNombreProductos.length;index++)
     {
-        pedidoString+=`${numeroPedido}) ${arrNombreProductos[index]}:  ${arrCantidades[index]} PZ X $${arrPreciosUnitario[index]}= $${arrSubTotales[index]}<br>Detalles: ${arrDetallesPedido[index]}<br>`;
+        pedidoString+=`${numeroPedido}) ${arrNombreProductos[index]}:  ${arrCantidades[index]} PZ X $${arrPreciosUnitario[index]}= $${arrSubTotales[index]}<br>Detalles: ${arrDetallesPedido[index]||"Sin detalles"}<br>`;
         numeroPedido++;//-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------->Se optimizo codigo
     }
     return pedidoString;
