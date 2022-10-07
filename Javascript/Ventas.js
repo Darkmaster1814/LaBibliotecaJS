@@ -1,6 +1,7 @@
 /* ===========================================VARIABLES===================================================== */
 /* Variables globles */
 let pedidosPagados=[];
+let accesos=[]//usuarios logeados
 /* nodos para generar tabla de ventas */
 let columnasVentas;
 /* ==============================================EVENTOS Y EL DOM========================================== */
@@ -30,17 +31,47 @@ function imprimirPedidosPagados()
         columnasVentas.append(column);
     });
 }
+/* =============================================================LOCALSTORAGE Y JSON======================================== */
+/* Obtener si un usuario ha iniciado sesion */
+function obtenerAccesos()
+{
+    let statusJSON=localStorage.getItem("accesos");
+    accesos= statusJSON && JSON.parse(statusJSON);
+}
 /* obtener pedidos pagados del storage */
 function obtenerPedidosPagadosStorage()
 {
     let pedidosPagadosJSON=localStorage.getItem("pedidosPagados");
         pedidosPagados=pedidosPagadosJSON && JSON.parse(pedidosPagadosJSON);//--------------------------------------------------------------------------------------------------------------------------->Se optimizó codigo
 }
+/* ==========================================================================ALERTAS DE USUARIO============================================================== */
+/* Alerta no se ha hecho inicio de sesion */
+function alertaInicioSesion() {
+    Swal.fire({
+        text: "Debe iniciar sesión",
+        icon: 'warning',
+        showCancelButton: false,
+        confirmButtonColor: '#3085d6',
+        confirmButtonText: 'Iniciar sesión'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            location.replace("../HTML/Password.html");
+        }
+    })
+}
 /* ==========================================================================INICIO DE EJECUCION DEL PROGRAMA=============================================================================== */
 function main()
 {
-    inicializarElementos();
-    obtenerPedidosPagadosStorage();
-    InicializarEventos();
+    obtenerAccesos()
+    if(accesos.length!=0)
+    {
+        inicializarElementos();
+        obtenerPedidosPagadosStorage();
+        InicializarEventos();
+    }
+    else
+    {
+        alertaInicioSesion();
+    }
 }
 main();

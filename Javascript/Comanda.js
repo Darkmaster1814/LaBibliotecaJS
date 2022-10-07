@@ -5,6 +5,7 @@ let productos=[];//Arreglo de productos disponibles para comprar
 let carrito=[];//Carrito de compras
 let pedidos=[];//Arreglo para pedido del carrito de compras
 let totalPago;//total por pagar
+let accesos=[]//Usuarios logeados
 /* Filtro */
 let formularioFiltro;
 let contenedorFiltro;
@@ -342,6 +343,12 @@ function actualizarPedidoStorage()
         localStorage.setItem("pedidos",pedidosJSON);
     }
 }
+/* Obtener si un usuario ha iniciado sesion */
+function obtenerAccesos()
+{
+    let statusJSON=localStorage.getItem("accesos");
+    accesos= statusJSON && JSON.parse(statusJSON);
+}
 /* Obtener el storage al comienzo de la carga de la pag */
 function obtenerProductosStorage() {
     let productosJSON = localStorage.getItem("productos");
@@ -495,13 +502,35 @@ function alertaPregunta(evento) {
         }
     })
 }
+/* Alerta no se ha hecho inicio de sesion */
+function alertaInicioSesion() {
+    Swal.fire({
+        text: "Debe iniciar sesión",
+        icon: 'warning',
+        showCancelButton: false,
+        confirmButtonColor: '#3085d6',
+        confirmButtonText: 'Iniciar sesión'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            location.replace("../HTML/Password.html");
+        }
+    })
+}
 /* ==========================================================================INICIO DE EJECUCION DEL PROGRAMA=============================================================================== */
 function main()
 {
-    inicializarElementos();
-    InicializarEventos();
-    obtenerProductosStorage();
-    obtenerCarritoStorage();
-    obtenerPedidoStorage();
+    obtenerAccesos()
+    if(accesos.length!=0)
+    {
+        inicializarElementos();
+        InicializarEventos();
+        obtenerProductosStorage();
+        obtenerCarritoStorage();
+        obtenerPedidoStorage();
+    }
+    else
+    {
+        alertaInicioSesion();
+    }
 }
 main();

@@ -4,6 +4,7 @@ let productos = []; //Arreglo de productos
 let id = 1; //Id de cada producto
 let contrasena = 1234; //Contraseña para editar productos
 let val; //Validador
+let accesos = []; //Usuarios que iniciaron sesion
 /* variables de nodos  */
 let formulario;
 let inputNombre;
@@ -147,6 +148,7 @@ function imprimirProductos() {
         </div>
             <div class="card-footer">
             <button type="button" class="btn btn-danger" id="botonEliminar-${producto.id}" >Eliminar</button>
+            <button type="button" class="btn btn-warning ml-5" id="botonEditar-${producto.id}" >Editar</button>
             </div>
     </div>
         `;
@@ -155,6 +157,14 @@ function imprimirProductos() {
         botonEliminarProducto.onclick = () => {
             if (val) {
                 alertaPregunta(producto.nombre, producto.id);
+            } else {
+                alertaWarning("No ha iniciado sesión"); //Si el evento de apretar el boton eliminar pasa activa la arrow del metodo elimianr el producto.id
+            }
+        }
+        let botonEditarProducto = document.getElementById(`botonEditar-${producto.id}`);
+        botonEditarProducto.onclick = () => {
+            if (val) {
+                editarProducto(producto.id, producto.nombre, producto.cantidad, producto.precio, producto.categoria);
             } else {
                 alertaWarning("No ha iniciado sesión"); //Si el evento de apretar el boton eliminar pasa activa la arrow del metodo elimianr el producto.id
             }
@@ -191,6 +201,11 @@ function actualizarProductosStorage() {
         productosJSON = JSON.stringify(productos);
         localStorage.setItem("productos", productosJSON);
     }
+}
+/* Obtener si un usuario ha iniciado sesion */
+function obtenerAccesos() {
+    let statusJSON = localStorage.getItem("accesos");
+    accesos = statusJSON && JSON.parse(statusJSON);
 }
 /* Obtener el storage al comienzo de la carga de la pag */
 function obtenerProductosStorage() {
@@ -317,10 +332,105 @@ function alertaPregunta(nombre, evento) {
         }
     })
 }
+/* Alerta no se ha hecho inicio de sesion */
+function alertaInicioSesion() {
+    Swal.fire({
+        text: "Debe iniciar sesión",
+        icon: 'warning',
+        showCancelButton: false,
+        confirmButtonColor: '#3085d6',
+        confirmButtonText: 'Iniciar sesión'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            location.replace("../HTML/Password.html");
+        }
+    })
+}
+/* Alerta de modificación de cantidades */
+async function editarProducto(...entrada) {
+    let idIn = entrada[0];
+    let nombre = entrada[1];
+    let cantidad = entrada[2];
+    let precio = entrada[3];
+    let categoria = entrada[4];
+    const {
+        value: formValues
+    } = await Swal.fire({
+        confirmButtonText: 'Guardar',
+        html: `
+    <div class="container-fluid">
+        <div class="row">
+            <h4 class="card-title ml-5">
+            ID<strong>${idIn}: ${nombre}</strong>
+            </h4>
+            <div class="card-body">
+                <img class="ml-3" style="width:250px" src="./Imagenes/${categoria}.svg" alt="Card café">
+                    <div class="row ">
+                        <div class="form-group col-md-12">
+                            <label for="inputNombreSwal">Nombre: ${nombre}</label>
+                            <input type="text" class="form-control" id="inputNombreSwal"
+                                placeholder="Nombre del producto">
+                        </div>
+                        <div class="form-group col-md-12">
+                            <label for="inputCantidadSwal">Cantidad: ${cantidad}</label>
+                            <input type="number" class="form-control" id="inputCantidadSwal"
+                                placeholder="Cantidad disponible">
+                        </div>
+                        <div class="form-group col-md-12">
+                            <label for="inputPrecioSwal">Precio: $${precio}</label>
+                            <input type="text" class="form-control" id="inputPrecioSwal"
+                                placeholder="Costo unitario del producto en formato $XX.YY">
+                        </div>
+                        <select id="inputCategoriaSwal" class="form-control">
+                            <option selected>Seleccionar</option>
+                            <option>Otros</option>
+                            <option>Bebidas-Calientes</option>
+                            <option>Bebidas-Frias</option>
+                            <option>Panaderia</option>
+                            <option>Cafeteria</option>
+                        </select>
+                    </div>
+            </div>
+        </div>
+    </div>
+        `,
+        focusConfirm: false,
+        preConfirm: () => {
+
+            let nombreSwal = document.getElementById('inputNombreSwal').value.toUpperCase() || nombre;
+            let cantidadSwal = document.getElementById('inputCantidadSwal').value || cantidad;
+            let precioSwal = document.getElementById('inputPrecioSwal').value || precio;
+            let categoriaSwal = (document.getElementById('inputCategoriaSwal').value == "Seleccionar") ? categoria : document.getElementById('inputCategoriaSwal').value;
+            productos.forEach((producto) => {
+                if (producto.id == idIn) {
+                    producto.nombre = nombreSwal;
+                    producto.cantidad = parseFloat(cantidadSwal);
+                    producto.precio = parseFloat(precioSwal);
+                    producto.categoria = categoriaSwal;
+                    actualizarProductosStorage();
+                    imprimirProductos();
+                    imprimirEstadisticas();
+                }
+            });
+        }
+    })
+
+    if (formValues) {
+        alertaExito(`${nombre} actualizado exitosamente`);
+    }
+}
 /* ==========================================================================INICIO DE EJECUCION DEL PROGRAMA=============================================================================== */
 function main() {
-    inicializarElementos();
-    InicializarEventos();
-    obtenerProductosStorage();
+    obtenerAccesos()
+
+    if (accesos.length != 0) {
+        console.log(accesos)
+        inicializarElementos();
+        InicializarEventos();
+        obtenerProductosStorage();
+        console.log(productos);
+    } else {
+        alertaInicioSesion();
+    }
 }
 main();

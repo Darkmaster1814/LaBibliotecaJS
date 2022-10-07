@@ -6,6 +6,7 @@ let pedidosMesas=[]//Pedidos de las mesas
 let pedidosPagados=[];//Pedidos que han sido pagados
 let totalParaMostrar;//Total para impresion
 let iva;//subtotal de pago sin iva
+let accesos=[];//Usuarios logeados
 /* Variables formulario */
 let idMesa;//Id de cada mesa que hizo pedido
 let nombreClienteFormulario;//Nombre del cliente
@@ -325,6 +326,12 @@ function actualizarPedidoPagadosStorage()
         localStorage.setItem("pedidosPagados",pedidosPagadosJSON);
     }
 }
+/* Obtener si un usuario ha iniciado sesion */
+function obtenerAccesos()
+{
+    let statusJSON=localStorage.getItem("accesos");
+    accesos= statusJSON && JSON.parse(statusJSON);
+}
 /* Obtener pedidos del storage */
 function obtenerPedidoStorage()
 {
@@ -395,12 +402,34 @@ function alertaPregunta(evento) {
         }
     })
 }
+/* Alerta no se ha hecho inicio de sesion */
+function alertaInicioSesion() {
+    Swal.fire({
+        text: "Debe iniciar sesión",
+        icon: 'warning',
+        showCancelButton: false,
+        confirmButtonColor: '#3085d6',
+        confirmButtonText: 'Iniciar sesión'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            location.replace("../HTML/Password.html");
+        }
+    })
+}
 /* ==========================================================================INICIO DE EJECUCION DEL PROGRAMA=============================================================================== */
 function main()
 {
-    inicializarElementos();
-    InicializarEventos();
-    obtenerPedidoStorage();
-    obtenerPedidosPagadosStorage();
+    obtenerAccesos()
+    if(accesos.length!=0)
+    {
+        inicializarElementos();
+        InicializarEventos();
+        obtenerPedidoStorage();
+        obtenerPedidosPagadosStorage();
+    }
+    else
+    {
+        alertaInicioSesion();
+    }
 }
 main();
