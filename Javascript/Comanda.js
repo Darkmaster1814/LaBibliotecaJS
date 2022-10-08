@@ -520,7 +520,7 @@ function alertaInicioSesion() {
 function main()
 {
     obtenerAccesos()
-    if(accesos.length!=0)
+    if(accesos!=null)
     {
         inicializarElementos();
         InicializarEventos();

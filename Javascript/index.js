@@ -422,9 +422,8 @@ async function editarProducto(...entrada) {
 /* ==========================================================================INICIO DE EJECUCION DEL PROGRAMA=============================================================================== */
 function main() {
     obtenerAccesos()
-
-    if (accesos.length != 0) {
-        console.log(accesos)
+    console.log(accesos)
+    if (accesos != null) {
         inicializarElementos();
         InicializarEventos();
         obtenerProductosStorage();
