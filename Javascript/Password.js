@@ -44,9 +44,10 @@ function validarUsuarioContrasena(user,pass){
         if(usuarios.contrasena[indexContrasena]===pass)
         {
             let accesoNuevo=new Status(user);
-            accesos.push(accesoNuevo)
-            ActualizarInicioSesionStorage()
-            location.replace("../index.html");
+            accesos.push(accesoNuevo);
+            ActualizarInicioSesionStorage();
+            alertaExito(`Bienvenido ${user}`);
+            location.replace("../HTML/Inventario.html");
         }
         else
         {
@@ -72,6 +73,19 @@ function obtenerAccesos()
     accesos= statusJSON && JSON.parse(statusJSON);
 }
 /* ========================================================================== ALERTAS ====================================================================================================== */
+function alertaExito(mensaje) {
+    const Toast = Swal.mixin({
+        toast: true,
+        position: 'top-end',
+        showConfirmButton: false,
+        timer: 3000,
+        timerProgressBar: true,
+    })
+    Toast.fire({
+        icon: 'success',
+        text: mensaje
+    })
+}
 function alertaError(mensaje) {
     Swal.fire({
         icon: 'error',

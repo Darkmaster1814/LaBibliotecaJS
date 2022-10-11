@@ -63,7 +63,7 @@ function InicializarEventos() {
             validarFormulario(evento);
         } else {
             evento.preventDefault();
-            alertaWarning("No ha iniciado sesión");
+            alertaWarning("Ingresa la contraseña de autorización");
         }
     }
     formularioFiltro.onsubmit = (evento) => filtrarInformacion(evento);
@@ -94,33 +94,22 @@ function validarFormulario(evento) {
     if (cantidad >= 0) {
         if (precio > 0) {
             let producto = new Producto(id, nombre, cantidad, precio, categoria);
-            id++ //Crear id unicos                                                                                                                                                     <-------SE optimizo
-            formulario.reset(); //Reinicia el nodo formulario evitando que se dupliquen el HTML agregado de los articulos en el innerHTML
-            productos.push(producto);
-            actualizarProductosStorage();
-            imprimirEstadisticas();
-            imprimirProductos(); //Muestra los productos en el HTML
-            alertaExito(`${nombre} fue agregado exitosamente`);
-        } else {
-            alertaError("Precio incorrecto");
+            registrarProductoServer(producto);//Registro el el server con metodo POST
         }
-    } else {
+        else
+        {
+        alertaError("Precio incorrecto");
+        }
+    } 
+    else 
+    {
         alertaError("Cantidad incorrecta");
     }
 }
 /* funcion para eliminar productos */
 function eliminarProducto(idProducto) {
-    let columnaABorrar = document.getElementById(`columna-${idProducto}`);
-    let indexABorrarDelArray = productos.findIndex((producto) => Number(producto.id) === Number(idProducto)); //Manda cada objeto de producto y lo compara con su valor dado por el parametro de entrada id si son iguales obtiene el indice del arrayProdcutos que corresponde a la posición del array que se desea borrar
-    productos.splice(indexABorrarDelArray, 1); //Quita del array de productos el producto con id dado por el parametro
-    columnaABorrar.remove(); //Remueve el HTML del producto mostrado
-    actualizarProductosStorage(); //actualiza el storage segun lo eliminado
-    /* PARA LAS ESTADISTICAS */
-    let columnaEstadisticaBorrar = document.getElementById("Estadisticas-Inventario");
-    columnaEstadisticaBorrar.remove();
-    imprimirEstadisticas();
+    eliminarProductoServer(idProducto);
 }
-
 /* =================================================================MODIFICACION DEL DOM============================================================================== */
 /* Imprimir los productos con codigo HTML DOM */
 function imprimirProductos() {
@@ -131,7 +120,7 @@ function imprimirProductos() {
         column.id = `columna-${producto.id}`;
         column.innerHTML = `
     <div class="card">
-    <img class="card-img-top ml-4" style="width:300px" src="./Imagenes/${producto.categoria}.svg" alt="Card café">
+    <img class="card-img-top ml-4" style="width:300px" src="../Imagenes/${producto.categoria}.svg" alt="Card café">
         <div class="card-body">
             <h4 class="card-title">
             ID<strong> ${producto.id}: ${producto.nombre}</strong>
@@ -158,7 +147,7 @@ function imprimirProductos() {
             if (val) {
                 alertaPregunta(producto.nombre, producto.id);
             } else {
-                alertaWarning("No ha iniciado sesión"); //Si el evento de apretar el boton eliminar pasa activa la arrow del metodo elimianr el producto.id
+                alertaWarning("Ingresa la contraseña de autorización"); //Si el evento de apretar el boton eliminar pasa activa la arrow del metodo elimianr el producto.id
             }
         }
         let botonEditarProducto = document.getElementById(`botonEditar-${producto.id}`);
@@ -166,7 +155,7 @@ function imprimirProductos() {
             if (val) {
                 editarProducto(producto.id, producto.nombre, producto.cantidad, producto.precio, producto.categoria);
             } else {
-                alertaWarning("No ha iniciado sesión"); //Si el evento de apretar el boton eliminar pasa activa la arrow del metodo elimianr el producto.id
+                alertaWarning("Ingresa la contraseña de autorización"); //Si el evento de apretar el boton eliminar pasa activa la arrow del metodo elimianr el producto.id
             }
         }
     }); //Termina foreach
@@ -207,23 +196,6 @@ function obtenerAccesos() {
     let statusJSON = localStorage.getItem("accesos");
     accesos = statusJSON && JSON.parse(statusJSON);
 }
-/* Obtener el storage al comienzo de la carga de la pag */
-function obtenerProductosStorage() {
-    let productosJSON = localStorage.getItem("productos");
-    if (productosJSON) {
-        productos = JSON.parse(productosJSON);
-        if (productos.length != 0) {
-            id = productos[productos.length - 1].id + 1;
-        } else if (productos.length == 0) {
-            id = 1;
-        }
-        mostrarFiltro();
-        imprimirProductos();
-        imprimirEstadisticas();
-    } else {
-        ocultarFiltro();
-    }
-}
 /* ==============================================================FUNCIONES ESPECIFICAS DE LA PAGINA=================================================== */
 /* Obtener el tipo de filtro */
 function filtrarInformacion(evento) {
@@ -255,20 +227,19 @@ function filtrarInformacion(evento) {
 function mostrarFiltro() {
     contenedorFiltro.hidden = false;
 }
-
+/* Ocultar filtro */
 function ocultarFiltro() {
     contenedorFiltro.hidden = true;
 }
 /* Calcular costo del inventario */
 function calcularCosto(productos) {
     let costoTotalInventario = 0;
-
     for (let producto of productos) {
         costoTotalInventario += producto.cantidad * producto.precio;
     }
     return costoTotalInventario;
 }
-
+/* Calcular total de productos agregados */
 function calcularTotal(productos) {
     let totalDeProductos = 0;
     for (let producto of productos) {
@@ -276,7 +247,7 @@ function calcularTotal(productos) {
     }
     return totalDeProductos;
 }
-
+/* Calcular el producto con menor stock */
 function calcularMin(productos) {
     let minVal;
     let minArr = productos;
@@ -291,14 +262,12 @@ function alertaError(mensaje) {
         text: mensaje,
     });
 }
-
 function alertaWarning(mensaje) {
     Swal.fire({
         icon: 'warning',
         text: mensaje,
     });
 }
-
 function alertaExito(mensaje) {
     const Toast = Swal.mixin({
         toast: true,
@@ -307,19 +276,17 @@ function alertaExito(mensaje) {
         timer: 3000,
         timerProgressBar: true,
     })
-
     Toast.fire({
         icon: 'success',
         text: mensaje
     })
 }
-
 function alertaPregunta(nombre, evento) {
     Swal.fire({
         icon: 'warning',
         text: `¿Estas seguro que deseas eliminar ${nombre}?`,
         showDenyButton: true,
-        showCancelButton: true,
+        showCancelButton: false,
         confirmButtonText: 'Borrar',
         denyButtonText: `No borrar`,
     }).then((result) => {
@@ -342,7 +309,7 @@ function alertaInicioSesion() {
         confirmButtonText: 'Iniciar sesión'
     }).then((result) => {
         if (result.isConfirmed) {
-            location.replace("../HTML/Password.html");
+            location.replace("./HTML/Password.html");
         }
     })
 }
@@ -364,7 +331,7 @@ async function editarProducto(...entrada) {
             ID<strong>${idIn}: ${nombre}</strong>
             </h4>
             <div class="card-body">
-                <img class="ml-3" style="width:250px" src="./Imagenes/${categoria}.svg" alt="Card café">
+                <img class="ml-3" style="width:250px" src="../Imagenes/${categoria}.svg" alt="Card café">
                     <div class="row ">
                         <div class="form-group col-md-12">
                             <label for="inputNombreSwal">Nombre: ${nombre}</label>
@@ -396,38 +363,115 @@ async function editarProducto(...entrada) {
         `,
         focusConfirm: false,
         preConfirm: () => {
-
             let nombreSwal = document.getElementById('inputNombreSwal').value.toUpperCase() || nombre;
             let cantidadSwal = document.getElementById('inputCantidadSwal').value || cantidad;
             let precioSwal = document.getElementById('inputPrecioSwal').value || precio;
             let categoriaSwal = (document.getElementById('inputCategoriaSwal').value == "Seleccionar") ? categoria : document.getElementById('inputCategoriaSwal').value;
-            productos.forEach((producto) => {
-                if (producto.id == idIn) {
-                    producto.nombre = nombreSwal;
-                    producto.cantidad = parseFloat(cantidadSwal);
-                    producto.precio = parseFloat(precioSwal);
-                    producto.categoria = categoriaSwal;
-                    actualizarProductosStorage();
-                    imprimirProductos();
-                    imprimirEstadisticas();
-                }
-            });
+            editarProductoServer(idIn,nombreSwal,cantidadSwal,precioSwal,categoriaSwal);
         }
     })
-
     if (formValues) {
         alertaExito(`${nombre} actualizado exitosamente`);
     }
 }
+/* ==========================================================================BASE DE DATOS FETCH====================================================================== */
+/* Obtiene los productos cargados desde la mockAPI con una petición GET */
+function obtenerProductosServer(){//Devuelve una promesa
+    fetch("https://63444bfedcae733e8fdc4d44.mockapi.io/productos")
+    .then((response)=>
+    {//Obtiene una promesa con la información del servidor
+        //response proviene de un metodo asincrono por lo que es asinc y requiere .then para exception handling
+        //.json extrae el body de la respuesta y la devuelve una promesa que tendra el body en formato .json 
+        response.json()
+        .then((data)=>{
+                            productos=[...data];
+                            actualizarProductosStorage();
+                            imprimirProductos();
+                            id = parseInt(productos[productos.length - 1].id) + 1;
+                        });//Escuchar la respuesta al resolver la promesa (objeto response body en formato json)
+                            if (productos.length == 0) {
+                                id = 1;
+                                ocultarFiltro();//Si no hay productos oculta el filtro
+                            }
+                            /* Mostrar elementos en caso de que esten ocultos (sin productos agregados) */
+                            mostrarFiltro();
+                            imprimirProductos();
+                            imprimirEstadisticas();
+                    })
+    .catch((error)=>console.log(error));
+    
+}
+async function registrarProductoServer(producto){
+try{
+    const response= await fetch(
+        `https://63444bfedcae733e8fdc4d44.mockapi.io/productos/`,
+        {
+            method:"POST",
+            body:JSON.stringify(producto),
+        }
+        );
+        //REgistro en el servidor
+        id++ //Crear id unicos                                                                                                                                                     <-------SE optimizo
+        formulario.reset(); //Reinicia el nodo formulario evitando que se dupliquen el HTML agregado de los articulos en el innerHTML
+        productos.push(producto);
+        actualizarProductosStorage();
+        imprimirEstadisticas();
+        imprimirProductos(); //Muestra los productos en el HTML
+        alertaExito(`${producto.nombre} fue agregado exitosamente`);
+    }
+catch(error){console.log(error);}
+}
+async function eliminarProductoServer(idProducto){
+    try{
+        const response= await fetch(
+            `https://63444bfedcae733e8fdc4d44.mockapi.io/productos/${idProducto}`,
+            {
+                method:"DELETE",
+            }
+        );
+        console.log(response);
+        let columnaABorrar = document.getElementById(`columna-${idProducto}`);
+        let indexABorrarDelArray = productos.findIndex((producto) => Number(producto.id) === Number(idProducto)); //Manda cada objeto de producto y lo compara con su valor dado por el parametro de entrada id si son iguales obtiene el indice del arrayProdcutos que corresponde a la posición del array que se desea borrar
+        productos.splice(indexABorrarDelArray, 1); //Quita del array de productos el producto con id dado por el parametro
+        columnaABorrar.remove(); //Remueve el HTML del producto mostrado
+        actualizarProductosStorage(); //actualiza el storage segun lo eliminado
+        /* PARA LAS ESTADISTICAS */
+        let columnaEstadisticaBorrar = document.getElementById("Estadisticas-Inventario");
+        columnaEstadisticaBorrar.remove();
+        imprimirEstadisticas();
+    }
+    catch(error){console.log();(error);}
+}
+async function editarProductoServer(idIn,nombreSwal,cantidadSwal,precioSwal,categoriaSwal){
+    try{
+    productos.forEach((producto) => {
+        if (producto.id == idIn) {
+            producto.nombre = nombreSwal;
+            producto.cantidad = parseFloat(cantidadSwal);
+            producto.precio = parseFloat(precioSwal);
+            producto.categoria = categoriaSwal;
+            const response=fetch(        
+                `https://63444bfedcae733e8fdc4d44.mockapi.io/productos/${idIn}`,
+            {
+                method:"PUT",
+                body:JSON.stringify(producto),
+            });
+            console.log(response)
+            actualizarProductosStorage();
+            imprimirProductos();
+            imprimirEstadisticas();
+        }
+    });
+    }
+    catch(error){console.log(error);}
+}
 /* ==========================================================================INICIO DE EJECUCION DEL PROGRAMA=============================================================================== */
 function main() {
-    obtenerAccesos()
-    console.log(accesos)
+    obtenerAccesos()//Obtiene los accesos y si no los hay no muestra la info HTML
     if (accesos != null) {
         inicializarElementos();
         InicializarEventos();
-        obtenerProductosStorage();
-        console.log(productos);
+        obtenerProductosServer();
     } else {
         alertaInicioSesion();
     }

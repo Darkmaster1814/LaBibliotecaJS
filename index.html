@@ -1,12 +1,14 @@
-<!-- Seccion de Agregar articulos nuevos -->
 <!DOCTYPE html>
 <html lang="es">
-<!--  -->
-
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <!-- ETIQUETAS META INICIO -->
+    <!-- Description of browser -->
+    <meta name="description" content="Sistema de usuario">
+    <!-- keywords -->
+    <meta name="keywords" content="user,password,key">
     <!-- ETIQUETAS META FIN -->
     <!-- Library type of fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -21,184 +23,66 @@
     <!-- library Bootstrap -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootswatch@4.5.2/dist/minty/bootstrap.min.css"
         integrity="sha384-H4X+4tKc7b8s4GoMrylmy2ssQYpDHoqzPa9aKXbDwPoPUA3Ra8PA5dGzijN+ePnH" crossorigin="anonymous" />
-    <!-- Link toastify -->
-    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
-        <!-- Reference of CSS file -->
+    <!-- Reference of CSS file -->
     <link rel="stylesheet" href="./CSS/styles.css" />
     <!-- Library of animation and transitions -->
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet" />
-    <title>Nuevos Articulos</title>
+    <title>Login</title>
 </head>
-
 <body>
     <!-- Full responsive header start -->
-    <nav class="navbar navbar-expand-lg navbar-dark sticky-top">
+    <nav class="navbar navbar-expand-lg banner sticky-top">
         <div class="container-fluid">
-            <a class="navbar-brand logo h2" href="../index.html">
+            <a class="navbar-brand logo h2" href="#">
                 <h1>La<span>Biblioteca</span></h1>
             </a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarColor01"
-                aria-controls="navbarColor01" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarColor01">
-                <div class="mx-auto"></div>
-                <ul class="navbar-nav">
-                    <li class="nav-item">
-                        <a class="nav-link active" href="./HTML/Pedidos.html">Pedidos</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link active" href="./HTML/Comanda.html">Comanda</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link active" href="#">Inventario</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link active" href="./HTML/Ventas.html">Ventas</a>
-                    </li>
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button"
-                            aria-haspopup="true" aria-expanded="false">Personal</a>
-                        <div class="dropdown-menu">
-                            <!-- Enlace de boton temporal -->
-                            <a class="dropdown-item" href="./HTML/Password.html">Cerrar sesión</a>
-                        </div>
-                    </li>
-                </ul>
-            </div>
+        </div>
         </div>
     </nav>
     <!-- Full responsive header end -->
-    <h2>Agregar Nuevo Producto</h2>
-    <!-- Identificarse para editar o agregar productos start -->
-    <div class="container-fluid">
-        <div class="row">
-                <div id="contenedorIdentificacion">
-                    <div class="container-fluid" id="contenedorIdentificacion">
-                        <form id="formularioIdentificacion">
-                            <div class="row">
-                                <div class="col-md-6">
-                                    <div>
-                                        <label class="form-label mt-4">Identificate para acceder al inventario:</label>
-                                        <input type="password" class="form-control mb-4"
-                                            placeholder="Ingresa la contraseña" id="inputPassword" required />
-                                    </div>
-                                </div>
-                                <div class="col-md-4 d-flex align-items-end">
-                                    <button type="submit" class="btn btn-secondary mb-4">
-                                        Acceder
-                                    </button>
-                                </div>
-                            </div>
-                        </form>
+    <!-- Form start -->
+    <div class="container-fluid pass">
+        <div class="row col-12">
+            <div class="card-body">
+                <form id="formularioAcceso">
+                    <div class="mb-3 mt-3">
+                        <label for="usuario" class="form-label">Usuario:</label>
+                        <input type="text" class="form-control" id="usuario" placeholder="Introduce nombre de usuario" required />
                     </div>
-                    <!-- Identificarse para editar o agregar productos end -->
-                </div>
-                <div class="col-md-6">
-                    <div id="contenedorUsuario" hidden>
-                        <h3 id="textoUsuario">Bienvenido:</h3>
+                    <div class="mb-3">
+                        <label for="contrasena" class="form-label">Contraseña:</label>
+                        <input type="password" class="form-control" id="contrasena" placeholder="Introduzca contraseña" required/>
                     </div>
-                </div>
+                    <div class="form-check mb-3">
+                        <button type="submit" class="btn btn-primary" id="botonInicioSesion">
+                            Iniciar Sesión
+                        </button>
+                    </div>
+                </form>
+            </div>
         </div>
     </div>
-            <!-- Container command products and cards start -->
-            <!-- form start -->
-            <div class="container-fluid">
-                <div class="row ">
-                    <form class="col-md-8 mt-4 mb-4" id="formulario">
-                        <div class="form-row">
-                            <div class="form-group col-md-6">
-                                <label for="inputNombre">Nombre</label>
-                                <input type="text" class="form-control" id="inputNombre"
-                                    placeholder="Nombre del producto" required>
-                            </div>
-                            <div class="form-group col-md-6">
-                                <label for="inputCantidad">Cantidad</label>
-                                <input type="number" class="form-control" id="inputCantidad"
-                                    placeholder="Cantidad disponible" required>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label for="inputPrecio">Precio</label>
-                            <input type="text" class="form-control" id="inputPrecio"
-                                placeholder="Costo unitario del producto en formato $XX.YY" required>
-                        </div>
-                        <select id="inputCategoria" class="form-control">
-                            <option selected>Otros</option>
-                            <option>Bebidas-Calientes</option>
-                            <option>Bebidas-Frias</option>
-                            <option>Panaderia</option>
-                            <option>Cafeteria</option>
-                        </select>
-                        <button type="submit" class="btn btn-primary mt-4 ml-1">Registrar Producto</button>
-                    </form>
-                    <div class="col-md-4" id="estadisticas">
-                    </div>
-                </div><!-- filtro -->
-                <div class="container-Fluid mt-3" id="contenedorFiltro">
-                    <div class="row justify-content-start">
-                        <form class="form-group col-6 " id="formularioFiltro">
-                            <select id="filtrar" class="form-control">
-                                <option selected>Ordenar por ID</option>
-                                <option>Ordenar por Nombre</option>
-                                <option>Ordenar por Categoria</option>
-                                <option>Ordenar por Mayor Precio</option>
-                                <option>Ordenar por Menor Precio</option>
-                                <option>Ordenar por Cantidad Disponible</option>
-                            </select>
-                            <button type="submit" class="btn btn-warning mt-3">Ordenar</button>
-                        </form>
-                    </div>
-                </div>
-                <div class="container-fluid">
-                    <div class="row" id="contenedorProductos"></div>
-                </div>
-            </div>
-
-            <!-- form ends -->
-            <!-- Container command products end -->
-            <!-- Footer start -->
-            <footer class="mt-4">
-                <p>&copy; LaBiblioteca 2022</p>
-                <p>Desarrollo por DarkMaster1814</p>
-                <div class="redes">
-                    <i class="fa-brands fa-facebook"></i>
-                    <i class="fa-brands fa-twitter"></i>
-                    <i class="fa-brands fa-instagram"></i>
-                </div>
-            </footer>
-            <!-- Footer end -->
-            <!-- BUTTON coffe -->
-            <!-- Button trigger modal -->
-            <button type="button" class="subir" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
-                <a href="#"><i class="fa-solid fa-coffee"></i></a>
-            </button>
-            <!-- Toastify alert cdn -->
-            <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
-            <!-- Sweet alert cdn -->
-            <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-            <!-- button of carshoping ends -->
-            <!-- DEFINITION OF SCRIPT ANIMATION AND TRANSITION -->
-            <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
-            <!-- LINK JS for BOOTSTRAP -->
-            <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
-                integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
-                crossorigin="anonymous">
-            </script>
-            <!-- Link JS for popover -->
-            <script>
-                AOS.init();
-            </script>
-            <script>
-                var popoverTriggerList = [].slice.call(
-                    document.querySelectorAll('[data-bs-toggle="popover"]')
-                );
-                var popoverList = popoverTriggerList.map(function (popoverTriggerEl) {
-                    return new bootstrap.Popover(popoverTriggerEl);
-                });
-            </script>
-            <!-- LINK JS -->
-            <script src="./Javascript/index.js"></script>
+    <!-- Form end -->
+    <!-- Footer start -->
+    <footer>
+        <p>&copy; LaBiblioteca 2022</p>
+        <p>Desarrollo por DarkMaster1814</p>
+        <div class="redes">
+            <i class="fa-brands fa-facebook"></i>
+            <i class="fa-brands fa-twitter"></i>
+            <i class="fa-brands fa-instagram"></i>
+        </div>
+    </footer>
+    <!-- Footer end -->
+    <!-- DEFINITION OF SCRIPT ANIMATION AND TRANSITION -->
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <!-- LINK JS for BOOTSTRAP -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous">
+    </script>
+    <!-- Sweet alert cdn -->
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>    
+<!-- LINK JS -->
+<script src="./Javascript/Password.js"></script>
 </body>
-
 </html>
