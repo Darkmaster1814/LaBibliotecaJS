@@ -35,8 +35,8 @@ function validarFormularioAcceso(evento)
 /* validar usuario y contraseña */
 function validarUsuarioContrasena(user,pass){
     let usuarios={
-        usuario:["admin","juan","victor"],
-        contrasena:["1234","juanbolsa123","victor_1234"],
+        usuario:["admin","juan","victor","valeria"],
+        contrasena:["1234","juanbolsa123","victor_1234","valle"],
     }//Objeto de contraseñas aceptadas
     if(usuarios.usuario.includes(user))
     {
@@ -47,7 +47,7 @@ function validarUsuarioContrasena(user,pass){
             accesos.push(accesoNuevo);
             ActualizarInicioSesionStorage();
             alertaExito(`Bienvenido ${user}`);
-            location.replace("../HTML/Inventario.html");
+            location.replace("./HTML/Inventario.html");
         }
         else
         {
