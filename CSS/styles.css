@@ -365,7 +365,10 @@ h6 {
 .navbar, .jumbotron {
   background-image: linear-gradient(to bottom, rgba(151, 92, 44, 0.813) 30%, rgb(233, 172, 87), rgba(211, 151, 67, 0.7));
 }
-
+nav{
+  top:0;
+  transition: top 0.5s;
+}
 .navbar-nav {
   margin-right: 5%;
 }
