@@ -190,9 +190,11 @@ function imprimirPedidoxPedido(arrNombreProductos,arrCantidades,arrPreciosUnitar
     let pedidoString="";
     for(let index=0; index<arrNombreProductos.length;index++)
     {
-        pedidoString+=`${numeroPedido}) ${arrNombreProductos[index]}:  ${arrCantidades[index]} PZ X $${arrPreciosUnitario[index]}= $${arrSubTotales[index]}<br>Detalles: ${arrDetallesPedido[index]||"Sin detalles"}<br>`;
+        pedidoString+=`${numeroPedido}) ${arrNombreProductos[index]}:  ${arrCantidades[index]} PZ X $${arrPreciosUnitario[index]}= $${arrSubTotales[index]}<br>`;
         numeroPedido++;//-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------->Se optimizo codigo
     }
+    pedidoString+=`Detalles Adicionales: <br>`;
+    arrDetallesPedido.forEach((pedido) => pedidoString+=`${pedido||"Sin detalles"}, `);
     return pedidoString;
 }
 /* Crear objetos mesa */
@@ -267,6 +269,7 @@ function unirInformacionXMesa(pedidos)
             /* Guarda el arreglo de informacion de cada mesa en un arreglo para todas las mesas que generaron pedido */
         arrClientes.push(cliente);
         arrDetallesPedido.push(arrDetallePedido);
+        console.log(arrDetallesPedido);
         arrProductos.push(arrProductosxMesa);
         arrPrecioProductos.push(arrPrecioProducto);
         arrCantidadProductos.push(arrCantidadProducto);
