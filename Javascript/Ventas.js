@@ -1,27 +1,24 @@
 /* ===========================================VARIABLES===================================================== */
 /* Variables globles */
-let pedidosPagados=[];
-let accesos=[]//usuarios logeados
+let pedidosPagados = [];
+let accesos = [] //usuarios logeados
 /* nodos para generar tabla de ventas */
 let columnasVentas;
 /* ==============================================EVENTOS Y EL DOM========================================== */
-function inicializarElementos()
-{
-    columnasVentas=document.getElementById("columnaVentas");
+function inicializarElementos() {
+    columnasVentas = document.getElementById("columnaVentas");
 }
-function InicializarEventos()
-{
-        pedidosPagados!==[] && imprimirPedidosPagados();//------------------------------------------------------------------------------------->sE OPTIMIZÓ CODIGO
+
+function InicializarEventos() {
+    pedidosPagados !== [] && imprimirPedidosPagados(); //------------------------------------------------------------------------------------->sE OPTIMIZÓ CODIGO
 }
 /* ==========================================================MANIPULACION DEL DOM================================================ */
 /* Imprimir la tabla de pedidos pagados */
-function imprimirPedidosPagados()
-{
-    columnasVentas.innerHTML="";
-    pedidosPagados.forEach((pedidoPagado)=>
-    {
-        let column=document.createElement("tr");
-        column.innerHTML=`
+function imprimirPedidosPagados() {
+    columnasVentas.innerHTML = "";
+    pedidosPagados.forEach((pedidoPagado) => {
+        let column = document.createElement("tr");
+        column.innerHTML = `
         <th scope="row">${pedidoPagado.fecha}</th>
         <td>${pedidoPagado.idMesa}</td>
         <td>${pedidoPagado.productosFormulario}</td>
@@ -33,16 +30,14 @@ function imprimirPedidosPagados()
 }
 /* =============================================================LOCALSTORAGE Y JSON======================================== */
 /* Obtener si un usuario ha iniciado sesion */
-function obtenerAccesos()
-{
-    let statusJSON=localStorage.getItem("accesos");
-    accesos= statusJSON && JSON.parse(statusJSON);
+function obtenerAccesos() {
+    let statusJSON = localStorage.getItem("accesos");
+    accesos = statusJSON && JSON.parse(statusJSON);
 }
 /* obtener pedidos pagados del storage */
-function obtenerPedidosPagadosStorage()
-{
-    let pedidosPagadosJSON=localStorage.getItem("pedidosPagados");
-        pedidosPagados=pedidosPagadosJSON && JSON.parse(pedidosPagadosJSON);//--------------------------------------------------------------------------------------------------------------------------->Se optimizó codigo
+function obtenerPedidosPagadosStorage() {
+    let pedidosPagadosJSON = localStorage.getItem("pedidosPagados");
+    pedidosPagados = pedidosPagadosJSON && JSON.parse(pedidosPagadosJSON); //--------------------------------------------------------------------------------------------------------------------------->Se optimizó codigo
 }
 /* ==========================================================================ALERTAS DE USUARIO============================================================== */
 /* Alerta no se ha hecho inicio de sesion */
@@ -60,17 +55,13 @@ function alertaInicioSesion() {
     })
 }
 /* ==========================================================================INICIO DE EJECUCION DEL PROGRAMA=============================================================================== */
-function main()
-{
+function main() {
     obtenerAccesos()
-    if(accesos!=null)
-    {
+    if (accesos != null) {
         inicializarElementos();
         obtenerPedidosPagadosStorage();
         InicializarEventos();
-    }
-    else
-    {
+    } else {
         alertaInicioSesion();
     }
 }

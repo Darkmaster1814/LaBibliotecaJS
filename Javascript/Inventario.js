@@ -94,15 +94,11 @@ function validarFormulario(evento) {
     if (cantidad >= 0) {
         if (precio > 0) {
             let producto = new Producto(id, nombre, cantidad, precio, categoria);
-            registrarProductoServer(producto);//Registro el el server con metodo POST
+            registrarProductoServer(producto); //Registro el el server con metodo POST
+        } else {
+            alertaError("Precio incorrecto");
         }
-        else
-        {
-        alertaError("Precio incorrecto");
-        }
-    } 
-    else 
-    {
+    } else {
         alertaError("Cantidad incorrecta");
     }
 }
@@ -262,12 +258,14 @@ function alertaError(mensaje) {
         text: mensaje,
     });
 }
+
 function alertaWarning(mensaje) {
     Swal.fire({
         icon: 'warning',
         text: mensaje,
     });
 }
+
 function alertaExito(mensaje) {
     const Toast = Swal.mixin({
         toast: true,
@@ -281,6 +279,7 @@ function alertaExito(mensaje) {
         text: mensaje
     })
 }
+
 function alertaPregunta(nombre, evento) {
     Swal.fire({
         icon: 'warning',
@@ -367,7 +366,7 @@ async function editarProducto(...entrada) {
             let cantidadSwal = document.getElementById('inputCantidadSwal').value || cantidad;
             let precioSwal = document.getElementById('inputPrecioSwal').value || precio;
             let categoriaSwal = (document.getElementById('inputCategoriaSwal').value == "Seleccionar") ? categoria : document.getElementById('inputCategoriaSwal').value;
-            editarProductoServer(idIn,nombreSwal,cantidadSwal,precioSwal,categoriaSwal);
+            editarProductoServer(idIn, nombreSwal, cantidadSwal, precioSwal, categoriaSwal);
         }
     })
     if (formValues) {
@@ -376,39 +375,37 @@ async function editarProducto(...entrada) {
 }
 /* ==========================================================================BASE DE DATOS FETCH====================================================================== */
 /* Obtiene los productos cargados desde la mockAPI con una petición GET */
-function obtenerProductosServer(){//Devuelve una promesa
+function obtenerProductosServer() { //Devuelve una promesa
     fetch("https://63444bfedcae733e8fdc4d44.mockapi.io/productos")
-    .then((response)=>
-    {//Obtiene una promesa con la información del servidor
-        //response proviene de un metodo asincrono por lo que es asinc y requiere .then para exception handling
-        //.json extrae el body de la respuesta y la devuelve una promesa que tendra el body en formato .json 
-        response.json()
-        .then((data)=>{
-                            productos=[...data];
-                            actualizarProductosStorage();
-                            imprimirProductos();
-                            id = parseInt(productos[productos.length - 1].id) + 1;
-                        });//Escuchar la respuesta al resolver la promesa (objeto response body en formato json)
-                            if (productos.length == 0) {
-                                id = 1;
-                                ocultarFiltro();//Si no hay productos oculta el filtro
-                            }
-                            /* Mostrar elementos en caso de que esten ocultos (sin productos agregados) */
-                            mostrarFiltro();
-                            imprimirProductos();
-                            imprimirEstadisticas();
-                    })
-    .catch((error)=>console.log(error));
-    
+        .then((response) => { //Obtiene una promesa con la información del servidor
+            //response proviene de un metodo asincrono por lo que es asinc y requiere .then para exception handling
+            //.json extrae el body de la respuesta y la devuelve una promesa que tendra el body en formato .json 
+            response.json()
+                .then((data) => {
+                    productos = [...data];
+                    actualizarProductosStorage();
+                    imprimirProductos();
+                    id = parseInt(productos[productos.length - 1].id) + 1;
+                }); //Escuchar la respuesta al resolver la promesa (objeto response body en formato json)
+            if (productos.length == 0) {
+                id = 1;
+                ocultarFiltro(); //Si no hay productos oculta el filtro
+            }
+            /* Mostrar elementos en caso de que esten ocultos (sin productos agregados) */
+            mostrarFiltro();
+            imprimirProductos();
+            imprimirEstadisticas();
+        })
+        .catch((error) => console.log(error));
+
 }
-async function registrarProductoServer(producto){
-try{
-    const response= await fetch(
-        `https://63444bfedcae733e8fdc4d44.mockapi.io/productos/`,
-        {
-            method:"POST",
-            body:JSON.stringify(producto),
-        }
+async function registrarProductoServer(producto) {
+    try {
+        const response = await fetch(
+            `https://63444bfedcae733e8fdc4d44.mockapi.io/productos/`, {
+                method: "POST",
+                body: JSON.stringify(producto),
+            }
         );
         //REgistro en el servidor
         id++ //Crear id unicos                                                                                                                                                     <-------SE optimizo
@@ -418,15 +415,15 @@ try{
         imprimirEstadisticas();
         imprimirProductos(); //Muestra los productos en el HTML
         alertaExito(`${producto.nombre} fue agregado exitosamente`);
+    } catch (error) {
+        console.log(error);
     }
-catch(error){console.log(error);}
 }
-async function eliminarProductoServer(idProducto){
-    try{
-        const response= await fetch(
-            `https://63444bfedcae733e8fdc4d44.mockapi.io/productos/${idProducto}`,
-            {
-                method:"DELETE",
+async function eliminarProductoServer(idProducto) {
+    try {
+        const response = await fetch(
+            `https://63444bfedcae733e8fdc4d44.mockapi.io/productos/${idProducto}`, {
+                method: "DELETE",
             }
         );
         console.log(response);
@@ -439,35 +436,37 @@ async function eliminarProductoServer(idProducto){
         let columnaEstadisticaBorrar = document.getElementById("Estadisticas-Inventario");
         columnaEstadisticaBorrar.remove();
         imprimirEstadisticas();
+    } catch (error) {
+        console.log();
+        (error);
     }
-    catch(error){console.log();(error);}
 }
-async function editarProductoServer(idIn,nombreSwal,cantidadSwal,precioSwal,categoriaSwal){
-    try{
-    productos.forEach((producto) => {
-        if (producto.id == idIn) {
-            producto.nombre = nombreSwal;
-            producto.cantidad = parseFloat(cantidadSwal);
-            producto.precio = parseFloat(precioSwal);
-            producto.categoria = categoriaSwal;
-            const response=fetch(        
-                `https://63444bfedcae733e8fdc4d44.mockapi.io/productos/${idIn}`,
-            {
-                method:"PUT",
-                body:JSON.stringify(producto),
-            });
-            console.log(response)
-            actualizarProductosStorage();
-            imprimirProductos();
-            imprimirEstadisticas();
-        }
-    });
+async function editarProductoServer(idIn, nombreSwal, cantidadSwal, precioSwal, categoriaSwal) {
+    try {
+        productos.forEach((producto) => {
+            if (producto.id == idIn) {
+                producto.nombre = nombreSwal;
+                producto.cantidad = parseFloat(cantidadSwal);
+                producto.precio = parseFloat(precioSwal);
+                producto.categoria = categoriaSwal;
+                const response = fetch(
+                    `https://63444bfedcae733e8fdc4d44.mockapi.io/productos/${idIn}`, {
+                        method: "PUT",
+                        body: JSON.stringify(producto),
+                    });
+                console.log(response)
+                actualizarProductosStorage();
+                imprimirProductos();
+                imprimirEstadisticas();
+            }
+        });
+    } catch (error) {
+        console.log(error);
     }
-    catch(error){console.log(error);}
 }
 /* ==========================================================================INICIO DE EJECUCION DEL PROGRAMA=============================================================================== */
 function main() {
-    obtenerAccesos()//Obtiene los accesos y si no los hay no muestra la info HTML
+    obtenerAccesos() //Obtiene los accesos y si no los hay no muestra la info HTML
     if (accesos != null) {
         inicializarElementos();
         InicializarEventos();
