@@ -405,6 +405,10 @@ async function registrarProductoServer(producto) {
             `https://63444bfedcae733e8fdc4d44.mockapi.io/productos/`, {
                 method: "POST",
                 body: JSON.stringify(producto),
+                headers:{
+                    'Content-type':
+                    'application/json; charset=UTF-8',
+                }
             }
         );
         //REgistro en el servidor
@@ -453,6 +457,10 @@ async function editarProductoServer(idIn, nombreSwal, cantidadSwal, precioSwal, 
                     `https://63444bfedcae733e8fdc4d44.mockapi.io/productos/${idIn}`, {
                         method: "PUT",
                         body: JSON.stringify(producto),
+                        headers:{
+                            'Content-type':
+                            'application/json; charset=UTF-8',
+                                }
                     });
                 console.log(response)
                 actualizarProductosStorage();
